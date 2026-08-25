@@ -1,0 +1,5245 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SHARRI Restaurant — Premium ordering platform for grill, pizza, fast food, daily dishes and drinks." />
+  <title>Sharri Restaurant | Eksperiencë Gastronomike</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --black: #060709;
+      --black-soft: #0b0d11;
+      --panel: rgba(15, 18, 24, 0.74);
+      --panel-strong: rgba(10, 12, 16, 0.92);
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --gold: #d8ae5f;
+      --gold-strong: #f1d18a;
+      --gold-deep: #9b752d;
+      --cream: #f7f0df;
+      --white: #fffdf8;
+      --muted: rgba(247, 240, 223, 0.72);
+      --muted-2: rgba(247, 240, 223, 0.48);
+      --danger: #ff7d68;
+      --success: #89e0a5;
+      --warning: #ffd166;
+      --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.42);
+      --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.3);
+      --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.18);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --header-height: 82px;
+      --font-display: "Playfair Display", serif;
+      --font-body: "Inter", sans-serif;
+      --transition: 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--cream);
+      background:
+        radial-gradient(circle at top left, rgba(216, 174, 95, 0.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(216, 174, 95, 0.08), transparent 26%),
+        linear-gradient(180deg, #090a0d 0%, #060709 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body.no-scroll {
+      overflow: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      background: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 12px;
+      z-index: 3000;
+      background: var(--gold);
+      color: #171104;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .skip-link:focus {
+      left: 12px;
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(216, 174, 95, 0.14), transparent 30%),
+        rgba(5, 6, 8, 0.98);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-inner {
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+    }
+
+    .loader-logo {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      animation: pulseGlow 1.6s ease-in-out infinite;
+    }
+
+    .loader-bar {
+      width: min(320px, 68vw);
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 42%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      animation: loaderSlide 1.15s ease-in-out infinite;
+    }
+
+    @keyframes loaderSlide {
+      from { transform: translateX(-80%); }
+      to { transform: translateX(220%); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.75; text-shadow: 0 0 24px rgba(216, 174, 95, 0.12); }
+      50% { opacity: 1; text-shadow: 0 0 42px rgba(216, 174, 95, 0.38); }
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 1000;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(6, 7, 9, 0.58);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    body.kds-mode .header {
+      display: none;
+    }
+
+    .header-inner {
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: var(--header-height);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #191204;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.18em;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      position: relative;
+      padding: 10px 2px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      transition: color var(--transition);
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-strong));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+
+    .nav a:hover {
+      color: var(--white);
+    }
+
+    .nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    .btn-gold {
+      color: #181104;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      box-shadow: 0 12px 30px rgba(216, 174, 95, 0.22);
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 16px 36px rgba(216, 174, 95, 0.3);
+    }
+
+    .btn-ghost {
+      color: var(--cream);
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-dark {
+      color: var(--cream);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-danger {
+      color: #330d07;
+      background: linear-gradient(135deg, #ff9d8d, var(--danger));
+    }
+
+    .btn-lg {
+      min-height: 58px;
+      padding: 0 32px;
+      font-size: 1rem;
+    }
+
+    .btn-sm {
+      min-height: 42px;
+      padding: 0 16px;
+      font-size: 0.92rem;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .btn[disabled] {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border-radius: 16px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--cream);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .icon-btn svg {
+      width: 21px;
+      height: 21px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .order-type-pill {
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--cream);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+    }
+
+    .cart-button {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      color: #171104;
+      font-size: 0.8rem;
+      font-weight: 900;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition);
+    }
+
+    .badge.bump {
+      animation: badgeBump 0.45s ease;
+    }
+
+    @keyframes badgeBump {
+      0% { transform: scale(0.65); }
+      55% { transform: scale(1.24); }
+      100% { transform: scale(1); }
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: calc(var(--header-height) + 40px) 20px 70px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(34px);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 52vw;
+      height: 52vw;
+      max-width: 820px;
+      max-height: 820px;
+      left: -18vw;
+      top: -18vw;
+      background: radial-gradient(circle, rgba(216, 174, 95, 0.22), transparent 68%);
+    }
+
+    .hero::after {
+      width: 42vw;
+      height: 42vw;
+      max-width: 680px;
+      max-height: 680px;
+      right: -16vw;
+      bottom: -16vw;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 70%);
+    }
+
+    .hero-content {
+      width: min(980px, 100%);
+      text-align: center;
+      display: grid;
+      gap: 24px;
+      justify-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      color: var(--gold);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 13vw, 10rem);
+      line-height: 0.92;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-shadow: 0 0 80px rgba(216, 174, 95, 0.22);
+    }
+
+    .hero-sub {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.3vw, 1.3rem);
+      line-height: 1.8;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .hero-divider {
+      width: min(340px, 62vw);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* Sections */
+    .section {
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 98px 0;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .section-head p {
+      color: var(--gold);
+      font-size: 0.98rem;
+      font-weight: 900;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      color: var(--white);
+    }
+
+    /* Menu toolbar */
+    .menu-toolbar {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 62px;
+      padding: 0 22px;
+      border-radius: 999px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-box svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: var(--white);
+      font-size: 1rem;
+    }
+
+    .search-box input::placeholder {
+      color: var(--muted-2);
+    }
+
+    .toolbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all var(--transition);
+    }
+
+    .chip:hover {
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+
+    .chip.active {
+      color: #181104;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(216, 174, 95, 0.2);
+    }
+
+    .select {
+      min-height: 52px;
+      padding: 0 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cream);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      outline: none;
+    }
+
+    .select option {
+      color: #111;
+    }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 26px;
+    }
+
+    .product-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36), 0 0 0 1px rgba(216, 174, 95, 0.22);
+      border-color: rgba(216, 174, 95, 0.32);
+    }
+
+    .product-card .media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(216, 174, 95, 0.22), rgba(255, 255, 255, 0.04)),
+        #12151b;
+    }
+
+    .product-card .media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(5, 6, 8, 0.05), rgba(5, 6, 8, 0.44));
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.07);
+    }
+
+    .badges {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      right: 62px;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #191204;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-pill.dark {
+      color: var(--cream);
+      background: rgba(9, 11, 15, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .favorite {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: var(--cream);
+      background: rgba(5, 6, 8, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+      font-size: 1.05rem;
+      transition: transform var(--transition), color var(--transition), background var(--transition);
+    }
+
+    .favorite:hover {
+      transform: scale(1.08);
+    }
+
+    .favorite.active {
+      color: #ff8d7e;
+      background: rgba(255, 125, 104, 0.14);
+    }
+
+    .product-body {
+      padding: 22px;
+      display: grid;
+      gap: 15px;
+    }
+
+    .product-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .product-top h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      line-height: 1.15;
+      color: var(--white);
+    }
+
+    .price {
+      flex: 0 0 auto;
+      color: var(--gold);
+      font-size: 1.2rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .price small {
+      color: var(--muted-2);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .product-desc {
+      min-height: 48px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.97rem;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .category-label {
+      color: var(--muted-2);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .product-card.out-of-stock .media img {
+      filter: grayscale(0.9) opacity(0.65);
+    }
+
+    /* Contact / footer */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .contact-card {
+      padding: 36px 30px;
+      border-radius: var(--radius-xl);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+      display: grid;
+      gap: 16px;
+    }
+
+    .contact-card h3 {
+      color: var(--gold);
+      letter-spacing: 0.24em;
+      font-size: 1rem;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 1.02rem;
+    }
+
+    .footer {
+      padding: 30px 18px 44px;
+      text-align: center;
+      color: var(--muted-2);
+      font-size: 0.92rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Drawer */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(3, 4, 5, 0.62);
+      backdrop-filter: blur(6px);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1300;
+      width: min(460px, 100vw);
+      background: var(--panel-strong);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-xl);
+      transform: translateX(105%);
+      transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 26px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .drawer-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      color: var(--white);
+    }
+
+    .drawer-body {
+      overflow: auto;
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .drawer-footer {
+      padding: 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      gap: 18px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .totals {
+      display: grid;
+      gap: 11px;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .totals-row.grand {
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      color: var(--white);
+      font-size: 1.18rem;
+      font-weight: 900;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 16px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .cart-thumb {
+      width: 88px;
+      height: 88px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cart-info {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cart-info h4 {
+      color: var(--white);
+      line-height: 1.3;
+      font-size: 1.02rem;
+    }
+
+    .cart-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .cart-note {
+      width: 100%;
+      min-height: 42px;
+      resize: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cream);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      outline: none;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .qty button {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #181104;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      font-weight: 900;
+    }
+
+    .qty span {
+      min-width: 26px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .line-price {
+      color: var(--gold);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .danger-icon {
+      color: var(--danger);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 125, 104, 0.08);
+      border: 1px solid rgba(255, 125, 104, 0.16);
+    }
+
+    /* Fullscreen modals */
+    .fullscreen-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top center, rgba(216, 174, 95, 0.16), transparent 32%),
+        rgba(4, 5, 7, 0.97);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .fullscreen-modal .modal-panel {
+      width: min(920px, 100%);
+      display: grid;
+      gap: 30px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .fullscreen-modal h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
+      color: var(--white);
+    }
+
+    .fullscreen-modal p {
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .choice-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .choice-card {
+      min-height: 230px;
+      padding: 30px;
+      display: grid;
+      align-content: center;
+      gap: 14px;
+      justify-items: center;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .choice-card:hover {
+      transform: translateY(-8px) scale(1.015);
+      border-color: rgba(216, 174, 95, 0.42);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.36), 0 0 0 1px rgba(216, 174, 95, 0.18);
+    }
+
+    .choice-icon {
+      font-size: 3.2rem;
+      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28));
+    }
+
+    .choice-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--white);
+    }
+
+    .choice-card p {
+      text-transform: none;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+
+    /* Modal root */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2100;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(3, 4, 6, 0.68);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+    }
+
+    .modal {
+      width: min(860px, 100%);
+      max-height: min(90vh, 980px);
+      overflow: auto;
+      padding: 30px;
+      border-radius: var(--radius-xl);
+      background: var(--panel-strong);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
+      transform: translateY(20px) scale(0.985);
+      transition: transform 0.28s ease;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--white);
+    }
+
+    .modal-sub {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-grid.two-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .input,
+    .textarea,
+    .select-field {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cream);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .input:focus,
+    .textarea:focus,
+    .select-field:focus {
+      border-color: rgba(216, 174, 95, 0.65);
+      box-shadow: 0 0 0 4px rgba(216, 174, 95, 0.1);
+    }
+
+    .checkline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      cursor: pointer;
+    }
+
+    .checkline input {
+      width: 19px;
+      height: 19px;
+      accent-color: var(--gold);
+    }
+
+    .panel-box {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      display: grid;
+      gap: 12px;
+    }
+
+    .panel-title {
+      color: var(--gold);
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .radio-grid,
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .summary-row strong {
+      color: var(--white);
+    }
+
+    .checkout-summary {
+      margin: 20px 0;
+    }
+
+    /* Toasts */
+    .toast-root {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 3200;
+      display: grid;
+      gap: 12px;
+      justify-items: end;
+    }
+
+    .toast {
+      max-width: min(430px, calc(100vw - 40px));
+      padding: 16px 18px;
+      border-radius: 18px;
+      color: var(--white);
+      background: rgba(10, 12, 16, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-success {
+      border-color: rgba(137, 224, 165, 0.35);
+    }
+
+    .toast-error {
+      border-color: rgba(255, 125, 104, 0.35);
+    }
+
+    .toast-info {
+      border-color: rgba(216, 174, 95, 0.35);
+    }
+
+    /* Empty states */
+    .empty-state {
+      padding: 56px 28px;
+      text-align: center;
+      border-radius: var(--radius-xl);
+      background: var(--glass);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      color: var(--muted);
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 2.8rem;
+    }
+
+    /* Kitchen */
+    .kds {
+      min-height: 100vh;
+      padding: 26px;
+      display: grid;
+      gap: 24px;
+      align-content: start;
+      background:
+        radial-gradient(circle at top left, rgba(216, 174, 95, 0.09), transparent 25%),
+        #050608;
+    }
+
+    .kds-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 20px 22px;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .kds-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--white);
+    }
+
+    .kds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(430px, 1fr));
+      gap: 22px;
+    }
+
+    .order-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: var(--shadow-xl);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      animation: fadeInUp 0.35s ease;
+    }
+
+    .order-card.status-preparing {
+      border-color: rgba(255, 209, 102, 0.34);
+    }
+
+    .order-card.status-ready {
+      border-color: rgba(137, 224, 165, 0.34);
+    }
+
+    .order-card-top {
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .order-number {
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .order-time {
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .status-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .status-pill.preparing {
+      color: #392600;
+      background: linear-gradient(135deg, #ffe3a1, var(--warning));
+    }
+
+    .status-pill.ready {
+      color: #072913;
+      background: linear-gradient(135deg, #b9f5cd, var(--success));
+    }
+
+    .status-pill.completed {
+      color: #04121f;
+      background: linear-gradient(135deg, #bde8ff, #79c8f2);
+    }
+
+    .status-pill.cancelled {
+      color: #370a04;
+      background: linear-gradient(135deg, #ffb2a5, var(--danger));
+    }
+
+    .order-card-body {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .order-meta {
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .order-meta strong {
+      color: var(--white);
+    }
+
+    .order-items {
+      display: grid;
+      gap: 14px;
+    }
+
+    .order-item {
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      display: grid;
+      gap: 8px;
+    }
+
+    .order-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .order-item-head strong {
+      color: var(--white);
+      font-size: 1.05rem;
+      line-height: 1.4;
+    }
+
+    .order-item-details {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .order-note {
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: rgba(216, 174, 95, 0.08);
+      border: 1px solid rgba(216, 174, 95, 0.22);
+      color: var(--cream);
+      line-height: 1.6;
+    }
+
+    .order-card-actions {
+      padding: 20px 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Admin */
+    .admin {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      background: #060709;
+    }
+
+    .admin-sidebar {
+      padding: 28px 20px;
+      border-right: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.02);
+      display: grid;
+      gap: 18px;
+      align-content: start;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .admin-brand {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      padding: 10px 8px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .admin-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .admin-nav button {
+      text-align: left;
+      padding: 15px 16px;
+      border-radius: 16px;
+      color: var(--muted);
+      font-weight: 800;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: all var(--transition);
+    }
+
+    .admin-nav button:hover {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .admin-nav button.active {
+      color: #181104;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-main {
+      padding: 30px;
+      display: grid;
+      gap: 24px;
+      align-content: start;
+    }
+
+    .admin-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .admin-topbar h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      color: var(--white);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900;
+      color: var(--white);
+    }
+
+    .panel {
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--white);
+    }
+
+    .chart svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .chart-bar {
+      fill: url(#goldGradient);
+    }
+
+    .chart-label {
+      fill: rgba(247, 240, 223, 0.62);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    .table th,
+    .table td {
+      padding: 15px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      vertical-align: middle;
+    }
+
+    .table th {
+      color: var(--muted-2);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .table td {
+      color: var(--cream);
+      line-height: 1.5;
+    }
+
+    .table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .thumb {
+      width: 72px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .login-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      width: min(480px, 100%);
+      padding: 34px;
+      border-radius: var(--radius-xl);
+      background: var(--panel-strong);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
+      display: grid;
+      gap: 22px;
+    }
+
+    /* Receipt */
+    .receipt {
+      width: min(430px, 100%);
+      margin: 0 auto;
+      padding: 28px 24px;
+      border-radius: 24px;
+      background: #fffdf8;
+      color: #151310;
+      display: grid;
+      gap: 16px;
+      font-size: 0.98rem;
+    }
+
+    .receipt-header {
+      text-align: center;
+      display: grid;
+      gap: 7px;
+    }
+
+    .receipt-brand {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.22em;
+    }
+
+    .receipt-divider {
+      height: 1px;
+      background: rgba(21, 19, 16, 0.14);
+    }
+
+    .receipt-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      line-height: 1.6;
+    }
+
+    .receipt-items {
+      display: grid;
+      gap: 10px;
+    }
+
+    .receipt-item small {
+      display: block;
+      color: rgba(21, 19, 16, 0.66);
+    }
+
+    .receipt-qr {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+    }
+
+    .receipt-qr img {
+      width: 132px;
+      height: 132px;
+      border-radius: 14px;
+    }
+
+    .receipt-thanks {
+      text-align: center;
+      font-weight: 800;
+    }
+
+    /* Utilities */
+    .mt-0 { margin-top: 0; }
+    .text-muted { color: var(--muted); }
+    .text-gold { color: var(--gold); }
+    .stack { display: grid; gap: 14px; }
+    .split { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .right { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+    .center { text-align: center; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .admin {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        position: static;
+        height: auto;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .header-inner {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 14px 0;
+      }
+
+      .nav {
+        order: 3;
+      }
+
+      .hero-title {
+        letter-spacing: 0.05em;
+      }
+
+      .kds-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .section {
+        padding: 72px 0;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid.two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-item {
+        grid-template-columns: 74px 1fr;
+      }
+
+      .cart-thumb {
+        width: 74px;
+        height: 74px;
+      }
+
+      .modal {
+        padding: 22px;
+      }
+    }
+
+    /* Print */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      .receipt,
+      .receipt * {
+        visibility: visible !important;
+      }
+
+      .receipt {
+        position: fixed;
+        inset: 0 auto auto 0;
+        width: 100%;
+        max-width: 430px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader-inner">
+      <div class="loader-logo">SHARRI</div>
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#menu">Skip to menu</a>
+
+  <header id="siteHeader" class="header">
+    <div class="header-inner">
+      <a class="brand" href="#/" aria-label="Sharri Home">
+        <span class="brand-mark">S</span>
+        <span class="brand-text" id="brandText">SHARRI</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#menu" data-i18n="nav.menu">MENU</a>
+        <a href="#contact" data-i18n="nav.contact">KONTAKT</a>
+        <a href="#/kitchen" data-i18n="nav.kitchen">Kuzhina</a>
+        <a href="#/admin" data-i18n="nav.admin">Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="langToggle" class="icon-btn" aria-label="Change language">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18"></path>
+            <path d="M12 3c2.6 2.5 2.6 15.5 0 18"></path>
+            <path d="M12 3c-2.6 2.5-2.6 15.5 0 18"></path>
+          </svg>
+        </button>
+
+        <button id="orderTypeToggle" class="order-type-pill" aria-label="Change order type">
+          <span id="orderTypeIcon">🍽</span>
+          <span id="orderTypeLabel">Zgjidh</span>
+        </button>
+
+        <button id="cartToggle" class="btn btn-gold cart-button" aria-label="Open cart">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="17" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.7 12.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20.5 8H6"></path>
+          </svg>
+          <span id="cartBadge" class="badge hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="siteView">
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <p class="hero-kicker reveal" data-i18n="hero.welcome">Mirësevini në</p>
+        <h1 class="hero-title reveal">SHARRI</h1>
+        <div class="hero-divider reveal"></div>
+        <p class="hero-sub reveal" data-i18n="hero.tagline">TRADITA TAKON MODERNEN NË ÇDO SHIJE</p>
+        <div class="hero-cta reveal">
+          <a href="#menu" class="btn btn-gold btn-lg" data-i18n="hero.cta">ZBULONI MENUNË</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="section">
+      <div class="section-head reveal">
+        <p data-i18n="menu.subtitle">Shije Autentike</p>
+        <h2 data-i18n="menu.title">Menuja Jonë</h2>
+      </div>
+
+      <div class="menu-toolbar">
+        <div class="search-box reveal">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.2-3.2"></path>
+          </svg>
+          <input
+            id="searchInput"
+            type="search"
+            autocomplete="off"
+            data-i18n-placeholder="search.placeholder"
+            placeholder="Kërko ushqim, pijë, pizza..."
+          />
+        </div>
+
+        <div class="toolbar-row reveal">
+          <div id="categoryChips" class="chips" aria-label="Filters"></div>
+          <select id="sortSelect" class="select" aria-label="Sort products"></select>
+        </div>
+      </div>
+
+      <div id="productGrid" class="product-grid" aria-live="polite"></div>
+
+      <div id="menuEmpty" class="empty-state hidden">
+        <div class="empty-icon">🍽</div>
+        <p data-i18n="menu.empty">Nuk u gjet asnjë produkt.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="section-head reveal">
+        <p data-i18n="contact.subtitle">Na vizitoni</p>
+        <h2 data-i18n="contact.title">Kontakt</h2>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card reveal">
+          <h3 data-i18n="contact.location">LOKACIONI</h3>
+          <p id="settingAddress">Komoran-Glogovc, Rruga Nazmi Gashi</p>
+          <p id="settingPhone">048 589 002</p>
+        </div>
+
+        <div class="contact-card reveal">
+          <h3 data-i18n="contact.hours">ORARI</h3>
+          <p id="settingHours">E Hënë - E Diel • 08:00 - 23:00</p>
+          <p data-i18n="contact.welcome">Ju mirëpresim!</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © 2025 SHARRI RESTAURANT. DESIGNED FOR EXCELLENCE.
+    </footer>
+  </div>
+
+  <main id="routeView" class="hidden" tabindex="-1"></main>
+
+  <div id="backdrop" class="backdrop hidden"></div>
+
+  <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Cart">
+    <div class="drawer-header">
+      <h3 data-i18n="cart.title">Shporta</h3>
+      <button id="cartClose" class="icon-btn" aria-label="Close cart">✕</button>
+    </div>
+    <div id="cartItems" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div class="totals">
+        <div class="totals-row">
+          <span data-i18n="cart.subtotal">Nëntotali</span>
+          <strong id="cartSubtotal">€0.00</strong>
+        </div>
+        <div class="totals-row">
+          <span data-i18n="cart.vat">TVSH</span>
+          <strong id="cartVat">€0.00</strong>
+        </div>
+        <div class="totals-row grand">
+          <span data-i18n="cart.total">Totali</span>
+          <strong id="cartTotal">€0.00</strong>
+        </div>
+      </div>
+      <button id="checkoutBtn" class="btn btn-gold btn-lg btn-block" disabled data-i18n="cart.checkout">
+        Vazhdo te Porosia
+      </button>
+    </div>
+  </aside>
+
+  <div id="languageModal" class="fullscreen-modal hidden" role="dialog" aria-modal="true" aria-label="Choose language">
+    <div class="modal-panel">
+      <p data-i18n="language.kicker">Sharri Restaurant</p>
+      <h2 data-i18n="language.title">Zgjidh Gjuhën</h2>
+      <div class="choice-grid">
+        <button class="choice-card" data-lang="sq">
+          <span class="choice-icon">🇽🇰</span>
+          <h3>Shqip</h3>
+          <p>Kosovë</p>
+        </button>
+        <button class="choice-card" data-lang="en">
+          <span class="choice-icon">🇬🇧</span>
+          <h3>English</h3>
+          <p>English</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="orderTypeModal" class="fullscreen-modal hidden" role="dialog" aria-modal="true" aria-label="Choose order type">
+    <div class="modal-panel">
+      <p data-i18n="order.kicker">Sharri Restaurant</p>
+      <h2 data-i18n="order.choose_type">Zgjidh Llojin e Porosisë</h2>
+      <div class="choice-grid">
+        <button class="choice-card" data-order-type="dine_in">
+          <span class="choice-icon">🍽</span>
+          <h3 data-i18n="order.dine_in">Haj Këtu</h3>
+          <p data-i18n="order.dine_in_desc">Porosit për të ngrënë në restorant.</p>
+        </button>
+        <button class="choice-card" data-order-type="takeout">
+          <span class="choice-icon">🥡</span>
+          <h3 data-i18n="order.takeout">Merr me Vete</h3>
+          <p data-i18n="order.takeout_desc">Porosit për ta marrë me vete.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+  <script type="module">
+    const DB_KEY = "sharri_pos_v1";
+    const LANG_KEY = "sharri_lang_v1";
+    const ORDER_TYPE_KEY = "sharri_order_type_v1";
+    const CART_KEY = "sharri_cart_v1";
+    const FAV_KEY = "sharri_favorites_v1";
+    const LOGIN_LIMIT_KEY = "sharri_login_limit_v1";
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+    const state = {
+      lang: null,
+      orderType: null,
+      cart: [],
+      favorites: [],
+      user: null,
+      filters: { q: "", category: "all", popular: false, daily: false, sort: "featured" },
+      adminSection: "overview",
+      adminOrderFilters: { q: "", status: "all", range: "all" },
+      resumeCheckout: false,
+      kdsSound: true,
+      knownOrders: new Set()
+    };
+
+    let db = null;
+
+    /* Utilities */
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function uuid() {
+      return crypto?.randomUUID?.() || `id-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`;
+    }
+
+    function formatMoney(value) {
+      return `${db?.settings?.currency || "€"}${Number(value || 0).toFixed(2)}`;
+    }
+
+    function formatDate(dateLike) {
+      return new Intl.DateTimeFormat(state.lang === "sq" ? "sq-AL" : "en-GB", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }).format(new Date(dateLike));
+    }
+
+    function formatTime(dateLike) {
+      return new Intl.DateTimeFormat(state.lang === "sq" ? "sq-AL" : "en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(new Date(dateLike));
+    }
+
+    function slugify(text) {
+      return String(text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "") || uuid();
+    }
+
+    async function hashPassword(password) {
+      const data = new TextEncoder().encode(password);
+      const digest = await crypto.subtle.digest("SHA-256", data);
+      return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    /* Data defaults */
+    const IMG = {
+      grill: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=72",
+      steak: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1000&q=72",
+      chicken: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1000&q=72",
+      meat: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1000&q=72",
+      burger: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=72",
+      sandwich: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1000&q=72",
+      pizza: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=72",
+      stew: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=72",
+      pasta: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1000&q=72",
+      salad: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=72",
+      drink: "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1000&q=72",
+      energy: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1000&q=72",
+      juice: "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1000&q=72"
+    };
+
+    const PIZZA_TYPES = [
+      { id: "tuna", name: { sq: "Tuna", en: "Tuna" } },
+      { id: "proshute", name: { sq: "Proshutë", en: "Ham" } },
+      { id: "suxhuk", name: { sq: "Suxhuk", en: "Sausage" } },
+      { id: "shtepise", name: { sq: "Pizza e Shtëpisë", en: "House Pizza" } }
+    ];
+
+    const PIZZA_REMOVABLE = [
+      { id: "ullinj", name: { sq: "Ullinj", en: "Olives" } },
+      { id: "speca", name: { sq: "Speca (Fafarona)", en: "Peppers (Fafarona)" } }
+    ];
+
+    const PIZZA_EXTRAS = [
+      { id: "extra_majoneze", name: { sq: "Extra Majonezë", en: "Extra Mayonnaise" } },
+      { id: "extra_kecap", name: { sq: "Extra Keçap", en: "Extra Ketchup" } },
+      { id: "extra_ullinj", name: { sq: "Extra Ullinj", en: "Extra Olives" } },
+      { id: "extra_fafarona", name: { sq: "Extra Fafarona", en: "Extra Peppers" } }
+    ];
+
+    function getDefaultDB() {
+      const now = Date.now();
+      let idx = 0;
+
+      const product = (
+        id,
+        category,
+        price,
+        image,
+        nameSq,
+        nameEn,
+        descSq,
+        descEn,
+        extra = {}
+      ) => ({
+        id,
+        category,
+        price,
+        image,
+        name: { sq: nameSq, en: nameEn },
+        desc: { sq: descSq, en: descEn },
+        popular: extra.popular || false,
+        daily: extra.daily || false,
+        hidden: false,
+        available: true,
+        unit: extra.unit || null,
+        created: now - idx++ * 3_600_000
+      });
+
+      const products = [
+        product("kombinim-skare", "skare", 4, IMG.grill, "Kombinim Skare", "Mixed Grill", "Përzierje e mishit të zgjedhur në skarë.", "A selection of premium grilled meats.", { popular: true }),
+        product("mish-vici-natyral", "skare", 5, IMG.steak, "Mish Viçi Natyral", "Natural Veal", "Mish viçi i freskët i pjekur në skarë.", "Fresh veal grilled to perfection."),
+        product("file-pule", "skare", 3, IMG.chicken, "File Pule", "Chicken Fillet", "File pule i butë dhe i shijshëm në skarë.", "Tender, flavorful grilled chicken fillet.", { popular: true }),
+        product("mishi-bardhe", "skare", 3.5, IMG.meat, "Mishi Bardhë", "White Meat", "Mish i bardhë i freskët nga skara.", "Fresh white meat from the grill."),
+        product("menza-mishi", "skare", 5, IMG.grill, "Menzë Mishi", "Meat Menza", "Specialitet i pasur me mish të zgjedhur.", "Rich specialty with selected meat."),
+        product("mish-vici-1kg", "skare", 20, IMG.steak, "Mish Viçi 1KG", "Veal 1KG", "Mish viçi i zgjedhur me cilësi të lartë.", "Premium quality veal, 1 kilogram."),
+        product("gjysme-kg-mish-vici", "skare", 10, IMG.steak, "1/2 KG Mish Viçi", "1/2 KG Veal", "Gjysmë kilogram mish viçi premium.", "Half kilogram of premium veal."),
+        product("pleskavice-mbushur", "skare", 4, IMG.grill, "Pleskavicë Mbushur", "Stuffed Pleskavica", "Pleskavicë e mbushur me shije të veçantë.", "Pleskavica with a rich stuffing."),
+        product("pleskavice-sharri", "skare", 4, IMG.grill, "Pleskavicë Sharri", "Sharri Pleskavica", "Specialiteti ynë i veçantë me erëza tradicionale.", "Our signature specialty with traditional spices.", { popular: true }),
+        product("pjata-uke", "skare", 5, IMG.meat, "Pjatë Uke", "Uka Plate", "Pjatë tradicionale e përgatitur me kujdes.", "Traditional plate prepared with care."),
+        product("gjyse-pule", "skare", 3, IMG.chicken, "1/2 Pulë", "Half Chicken", "Gjysmë pule e pjekur në mënyrë perfekte.", "Half chicken roasted perfectly."),
+        product("pule-komplet", "skare", 6, IMG.chicken, "Pulë Komplet", "Whole Chicken", "Pulë e tërë e pjekur me aromë të thellë.", "Whole chicken roasted with deep flavor."),
+        product("qebapa", "skare", 0.5, IMG.grill, "Qebapa", "Qebapa", "Qebapa tradicionale për copë.", "Traditional qebapa, per piece.", { popular: true, unit: "piece" }),
+
+        product("hamburger", "fastfood", 2, IMG.burger, "Hamburger", "Hamburger", "Hamburger i shijshëm dhe i freskët.", "Delicious fresh hamburger."),
+        product("hamburger-pomfrit", "fastfood", 2.5, IMG.burger, "Hamburger + Pomfrit", "Hamburger + Fries", "Hamburger i shijshëm shoqëruar me patate.", "Delicious hamburger served with fries.", { popular: true }),
+        product("sandwich-proshute", "fastfood", 2.5, IMG.sandwich, "Sandwich Proshutë", "Ham Sandwich", "Sandwich i freskët me proshutë.", "Fresh sandwich with ham."),
+        product("sandwich-pule", "fastfood", 2.5, IMG.sandwich, "Sandwich Pule", "Chicken Sandwich", "Sandwich i butë me mish pule.", "Soft sandwich with chicken."),
+        product("sandwich-tuna", "fastfood", 2.5, IMG.sandwich, "Sandwich Tuna", "Tuna Sandwich", "Sandwich i freskët me tunë dhe sallatë.", "Fresh sandwich with tuna and salad."),
+
+        product("pice-vogel", "pizza", 2, IMG.pizza, "Picë Vogël", "Small Pizza", "Picë e vogël, ideale për një person.", "Small pizza, ideal for one person."),
+        product("pice-mesme", "pizza", 3, IMG.pizza, "Picë Mesme", "Medium Pizza", "Ideale për 1-2 persona.", "Ideal for 1-2 people.", { popular: true }),
+        product("pice-madhe", "pizza", 4, IMG.pizza, "Picë Madhe", "Large Pizza", "Picë e madhe me përbërës të freskët.", "Large pizza with fresh ingredients."),
+        product("pice-familjare", "pizza", 7, IMG.pizza, "Picë Familjare", "Family Pizza", "Picë e madhe për familje ose shoqëri.", "Large pizza for family or friends."),
+
+        product("gullash", "gjelle", 2.5, IMG.stew, "Gullash", "Goulash", "Gatuar sipas recetës së vjetër shtëpiake.", "Cooked according to an old homemade recipe."),
+        product("pasul", "gjelle", 2.5, IMG.stew, "Pasul", "Beans", "Pasul i gatuar me kujdes dhe dashuri.", "Beans cooked with care and love.", { daily: true }),
+        product("kombinim-gjelle", "gjelle", 2.5, IMG.stew, "Kombinim Gjellë", "Dish Combination", "Kombinim gjellësh ditore të shtëpisë.", "Daily homemade dish combination.", { daily: true }),
+        product("makarona-shtepie-ditore", "gjelle", 2.5, IMG.pasta, "Makarona Shtëpie Ditore", "Daily Homemade Pasta", "Makarona të freskëta të bëra në shtëpi.", "Fresh homemade pasta.", { daily: true }),
+        product("sallate-pule-ditore", "gjelle", 2.5, IMG.salad, "Sallatë Pule Ditore", "Daily Chicken Salad", "Sallatë e freskët me pulë.", "Fresh salad with chicken.", { daily: true }),
+
+        product("coca-cola", "pije", 1, IMG.drink, "Coca-Cola", "Coca-Cola", "Pije freskuese 0.33l.", "Refreshing drink 0.33l."),
+        product("fanta", "pije", 1, IMG.drink, "Fanta", "Fanta", "Pije freskuese 0.33l.", "Refreshing drink 0.33l."),
+        product("schweppes", "pije", 1, IMG.drink, "Schweppes", "Schweppes", "Pije freskuese 0.33l.", "Refreshing drink 0.33l."),
+        product("sprite", "pije", 1, IMG.drink, "Sprite", "Sprite", "Pije freskuese 0.33l.", "Refreshing drink 0.33l."),
+        product("golden-eagle", "pije", 1, IMG.energy, "Golden Eagle", "Golden Eagle", "Pije energjetike.", "Energy drink."),
+        product("red-bull", "pije", 1.5, IMG.energy, "Red Bull", "Red Bull", "Pije energjetike.", "Energy drink."),
+        product("smirnoff-ice", "pije", 1.5, IMG.drink, "Smirnoff Ice", "Smirnoff Ice", "Pije freskuese.", "Refreshing beverage."),
+        product("hugos", "pije", 1.5, IMG.drink, "Hugo's", "Hugo's", "Pije freskuese.", "Refreshing beverage."),
+        product("laqin", "pije", 0.5, IMG.juice, "Laqin", "Laqin", "Pije freskuese.", "Refreshing drink."),
+        product("fructal", "pije", 1, IMG.juice, "Fructal", "Fructal", "Lëng frutash natyral.", "Natural fruit juice."),
+        product("fruti", "pije", 1, IMG.juice, "Fruti", "Fruti", "Lëng frutash natyral.", "Natural fruit juice."),
+        product("relax", "pije", 1, IMG.juice, "Relax", "Relax", "Pije freskuese.", "Refreshing drink."),
+        product("multisola", "pije", 1, IMG.juice, "Multisola", "Multisola", "Pije freskuese.", "Refreshing drink."),
+        product("ice-tea", "pije", 1, IMG.drink, "Ice Tea", "Ice Tea", "Çaj i ftohtë freskues.", "Refreshing cold tea.")
+      ];
+
+      return {
+        settings: {
+          restaurantName: "SHARRI",
+          phone: "048 589 002",
+          address: "Komoran-Glogovc, Rruga Nazmi Gashi",
+          hours: "E Hënë - E Diel • 08:00 - 23:00",
+          currency: "€",
+          taxRate: 18,
+          taxIncluded: true,
+          defaultLanguage: "sq"
+        },
+        categories: [
+          { id: "skare", sort: 1, name: { sq: "Skarë", en: "Grill" } },
+          { id: "fastfood", sort: 2, name: { sq: "Fast Food", en: "Fast Food" } },
+          { id: "pizza", sort: 3, name: { sq: "Pizza", en: "Pizza" } },
+          { id: "gjelle", sort: 4, name: { sq: "Gjellë", en: "Daily Dishes" } },
+          { id: "pije", sort: 5, name: { sq: "Pije", en: "Drinks" } }
+        ],
+        products,
+        orders: [],
+        customers: [],
+        users: [],
+        logs: [],
+        counters: { orders: 0 }
+      };
+    }
+
+    function loadDB() {
+      const base = getDefaultDB();
+      const raw = localStorage.getItem(DB_KEY);
+
+      if (!raw) {
+        localStorage.setItem(DB_KEY, JSON.stringify(base));
+        return base;
+      }
+
+      try {
+        const parsed = JSON.parse(raw);
+        return {
+          ...base,
+          ...parsed,
+          settings: { ...base.settings, ...(parsed.settings || {}) },
+          counters: { ...base.counters, ...(parsed.counters || {}) },
+          categories: parsed.categories || base.categories,
+          products: parsed.products || base.products,
+          orders: parsed.orders || [],
+          customers: parsed.customers || [],
+          users: parsed.users || [],
+          logs: parsed.logs || []
+        };
+      } catch {
+        localStorage.setItem(DB_KEY, JSON.stringify(base));
+        return base;
+      }
+    }
+
+    function saveDB() {
+      try {
+        localStorage.setItem(DB_KEY, JSON.stringify(db));
+        document.dispatchEvent(new CustomEvent("sharri:db-updated"));
+      } catch {
+        toast(t("notify.storage_error"), "error");
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(CART_KEY, JSON.stringify(state.cart));
+      document.dispatchEvent(new CustomEvent("sharri:cart-updated"));
+    }
+
+    function logActivity(action) {
+      db.logs.unshift({
+        id: uuid(),
+        at: new Date().toISOString(),
+        user: state.user?.username || "system",
+        action
+      });
+
+      if (db.logs.length > 350) db.logs.length = 350;
+      saveDB();
+    }
+
+    /* Translations */
+    const I18N = {
+      sq: {
+        "nav.menu": "MENU",
+        "nav.contact": "KONTAKT",
+        "nav.kitchen": "Kuzhina",
+        "nav.admin": "Admin",
+        "hero.welcome": "Mirësevini në",
+        "hero.tagline": "TRADITA TAKON MODERNEN NË ÇDO SHIJE",
+        "hero.cta": "ZBULONI MENUNË",
+        "menu.subtitle": "Shije Autentike",
+        "menu.title": "Menuja Jonë",
+        "menu.empty": "Nuk u gjet asnjë produkt. Provoni një kërkim tjetër.",
+        "contact.subtitle": "Na vizitoni",
+        "contact.title": "Kontakt",
+        "contact.location": "LOKACIONI",
+        "contact.hours": "ORARI",
+        "contact.welcome": "Ju mirëpresim!",
+
+        "language.title": "Zgjidh Gjuhën",
+        "language.kicker": "Sharri Restaurant",
+        "order.kicker": "Sharri Restaurant",
+        "order.choose_type": "Zgjidh Llojin e Porosisë",
+        "order.dine_in": "Haj Këtu",
+        "order.takeout": "Merr me Vete",
+        "order.dine_in_desc": "Porosit për të ngrënë në restorant.",
+        "order.takeout_desc": "Porosit për ta marrë me vete.",
+        "order.select": "Zgjidh",
+
+        "search.placeholder": "Kërko ushqim, pijë, pizza...",
+        "filter.all": "Të gjitha",
+        "filter.popular": "Popullore",
+        "filter.daily": "Ditor",
+        "sort.featured": "Të rekomanduara",
+        "sort.newest": "Më të rejat",
+        "sort.price_asc": "Çmima: Ulët → Lartë",
+        "sort.price_desc": "Çmima: Lartë → Ulët",
+
+        "badge.popular": "Popullore",
+        "badge.daily": "Ditor",
+        "badge.new": "E re",
+        "product.unavailable": "Nuk disponohet",
+        "unit.piece": "copë",
+
+        "add_to_cart": "Shto në Shportë",
+        "pizza.configure": "Konfiguro",
+        "notify.added": "U shtua në shportë.",
+        "notify.removed": "U hoq nga shporta.",
+        "notify.order_success": "Porosia u krijua me sukses.",
+        "notify.saved": "U ruajt me sukses.",
+        "notify.deleted": "U fshi.",
+        "notify.error": "Ka një gabim. Kontrolloni të dhënat.",
+        "notify.login_failed": "Kredencialet janë të pasakta.",
+        "notify.locked": "Shumë tentativa. Prisni 5 minuta.",
+        "notify.storage_error": "Ruajtja dështoi. Hapësira mund të jetë e mbushur.",
+        "notify.image_processed": "Imazhi u përpunua.",
+
+        "cart.title": "Shporta",
+        "cart.empty": "Shporta juaj është bosh.",
+        "cart.empty.cta": "Shiko menunë",
+        "cart.subtotal": "Nëntotali",
+        "cart.vat": "TVSH",
+        "cart.total": "Totali",
+        "cart.checkout": "Vazhdo te Porosia",
+        "cart.note": "Shënim...",
+        "cart.close": "Mbyll",
+
+        "checkout.title": "Porosia",
+        "checkout.customer": "Emri i klientit",
+        "checkout.phone": "Telefoni",
+        "checkout.table": "Numri i tavolinës",
+        "checkout.notes": "Shënime për kuzhinën",
+        "checkout.type": "Lloji i porosisë",
+        "checkout.wait": "Koha e parashikuar",
+        "checkout.minutes": "minuta",
+        "checkout.confirm": "Konfirmo Porosinë",
+        "checkout.summary": "Përmbledhja e porosisë",
+
+        "success.title": "Porosia u pranua!",
+        "success.message": "Porosia juaj u dërgua në kuzhinë.",
+        "success.order_number": "Numri i porosisë",
+        "success.view_receipt": "Shiko Faturën",
+        "success.close": "Mbyll",
+
+        "pizza.builder": "Ndërto Pizzën",
+        "pizza.size": "Madhësia",
+        "pizza.type": "Lloji i pizzës",
+        "pizza.remove_ingredients": "Hiq përbërës",
+        "pizza.extras": "Kërkesa ekstra (nuk garantohen)",
+        "pizza.extras_note": "Stafi vendos më vonë për mundësinë e realizimit.",
+        "pizza.note": "Shënim shtesë",
+        "pizza.add": "Shto Pizzën",
+        "pizza.removed": "Pa",
+        "pizza.extras_label": "Extra",
+        "ingredient.ullinj": "Ullinj",
+        "ingredient.speca": "Speca (Fafarona)",
+        "extra.extra_majoneze": "Extra Majonezë",
+        "extra.extra_kecap": "Extra Keçap",
+        "extra.extra_ullinj": "Extra Ullinj",
+        "extra.extra_fafarona": "Extra Fafarona",
+
+        "kitchen.title": "Paneli i Kuzhinës",
+        "kitchen.empty": "Nuk ka porosi aktive.",
+        "kitchen.back": "Kthehu te faqja",
+        "kitchen.sound": "Zëri",
+        "kitchen.customer": "Klienti",
+        "kitchen.phone": "Telefoni",
+        "kitchen.table": "Tavolina",
+        "kitchen.type": "Lloji",
+        "kitchen.print": "Printo",
+        "kitchen.preparing": "Duke u Përgatitur",
+        "kitchen.ready": "Gati",
+        "kitchen.completed": "Përfunduar",
+        "kitchen.cancelled": "Anuluar",
+
+        "receipt.title": "Fatura",
+        "receipt.order": "Porosia",
+        "receipt.date": "Data",
+        "receipt.customer": "Klienti",
+        "receipt.thankyou": "Faleminderit që zgjodhët SHARRI!",
+        "receipt.print": "Printo Faturën",
+
+        "admin.login_title": "Hyrja në Admin",
+        "admin.username": "Përdoruesi",
+        "admin.password": "Fjalëkalimi",
+        "admin.signin": "Hyr",
+        "admin.logout": "Dalje",
+        "admin.dashboard": "Paneli",
+        "admin.orders": "Porositë",
+        "admin.products": "Produktet",
+        "admin.categories": "Kategoritë",
+        "admin.settings": "Cilësimet",
+        "admin.users": "Përdoruesit",
+        "admin.logs": "Regjistri",
+        "admin.today_orders": "Porositë Sot",
+        "admin.revenue_today": "Të Ardhurat Sot",
+        "admin.orders_week": "Porositë Këtë Javë",
+        "admin.orders_month": "Porositë Këtë Muaj",
+        "admin.customers": "Klientë",
+        "admin.avg_order": "Porosia Mesatare",
+        "admin.top_foods": "Ushqimet Kryesore",
+        "admin.top_drinks": "Pijet Kryesore",
+        "admin.revenue_7_days": "Të Ardhurat 7 Ditët e Fundit",
+        "admin.export": "Eksporto CSV",
+        "admin.add_product": "Shto Produkt",
+        "admin.add_category": "Shto Kategori",
+        "admin.add_user": "Shto Përdorues",
+        "admin.save": "Ruaj",
+        "admin.cancel": "Anulo",
+        "admin.edit": "Ndrysho",
+        "admin.delete": "Fshi",
+        "admin.hide": "Fsheh",
+        "admin.show": "Shfaq",
+        "admin.available": "Aktiv",
+        "admin.unavailable": "Joaktiv",
+        "admin.price": "Çmimi",
+        "admin.category": "Kategoria",
+        "admin.image": "URL e imazhit",
+        "admin.image_file": "Ngarko imazh",
+        "admin.name_sq": "Emri (Shqip)",
+        "admin.name_en": "Emri (Anglisht)",
+        "admin.desc_sq": "Përshkrimi (Shqip)",
+        "admin.desc_en": "Përshkrimi (Anglisht)",
+        "admin.popular": "Popullore",
+        "admin.daily": "Ditor",
+        "admin.hidden": "Fshehur",
+        "admin.unit": "Njësia (p.sh. piece)",
+        "admin.sort": "Renditja",
+        "admin.role": "Roli",
+        "admin.settings_restaurant": "Emri i restorantit",
+        "admin.settings_phone": "Telefoni",
+        "admin.settings_address": "Adresa",
+        "admin.settings_hours": "Orari",
+        "admin.settings_currency": "Monedha",
+        "admin.settings_tax": "TVSH %",
+        "admin.settings_tax_included": "TVSH e përfshirë në çmime",
+        "admin.search_orders": "Kërko porosi...",
+        "admin.all_statuses": "Të gjitha statuset",
+        "admin.all_ranges": "Të gjitha periudhat",
+        "admin.today": "Sot",
+        "admin.week": "Këtë javë",
+        "admin.month": "Këtë muaj",
+        "admin.view": "Shiko",
+        "admin.no_data": "Nuk ka të dhëna.",
+        "admin.customer_name": "Emri",
+        "admin.items": "Artikujt",
+        "admin.status": "Statusi",
+        "admin.date": "Data",
+        "admin.actions": "Veprime",
+        "admin.total": "Totali",
+
+        "common.close": "Mbyll",
+        "common.back": "Kthehu",
+        "common.yes": "Po",
+        "common.no": "Jo",
+        "common.all": "Të gjitha",
+        "common.confirm_delete": "Jeni të sigurt që doni ta fshini?"
+      },
+
+      en: {
+        "nav.menu": "MENU",
+        "nav.contact": "CONTACT",
+        "nav.kitchen": "Kitchen",
+        "nav.admin": "Admin",
+        "hero.welcome": "Welcome to",
+        "hero.tagline": "WHERE TRADITION MEETS MODERN TASTE",
+        "hero.cta": "EXPLORE THE MENU",
+        "menu.subtitle": "Authentic Flavors",
+        "menu.title": "Our Menu",
+        "menu.empty": "No products found. Try another search.",
+        "contact.subtitle": "Visit us",
+        "contact.title": "Contact",
+        "contact.location": "LOCATION",
+        "contact.hours": "HOURS",
+        "contact.welcome": "We welcome you!",
+
+        "language.title": "Choose Language",
+        "language.kicker": "Sharri Restaurant",
+        "order.kicker": "Sharri Restaurant",
+        "order.choose_type": "Choose Order Type",
+        "order.dine_in": "Dine In",
+        "order.takeout": "Takeaway",
+        "order.dine_in_desc": "Order to eat at the restaurant.",
+        "order.takeout_desc": "Order to take with you.",
+        "order.select": "Select",
+
+        "search.placeholder": "Search food, drinks, pizza...",
+        "filter.all": "All",
+        "filter.popular": "Popular",
+        "filter.daily": "Daily",
+        "sort.featured": "Recommended",
+        "sort.newest": "Newest",
+        "sort.price_asc": "Price: Low → High",
+        "sort.price_desc": "Price: High → Low",
+
+        "badge.popular": "Popular",
+        "badge.daily": "Daily",
+        "badge.new": "New",
+        "product.unavailable": "Unavailable",
+        "unit.piece": "piece",
+
+        "add_to_cart": "Add to Cart",
+        "pizza.configure": "Configure",
+        "notify.added": "Added to cart.",
+        "notify.removed": "Removed from cart.",
+        "notify.order_success": "Order created successfully.",
+        "notify.saved": "Saved successfully.",
+        "notify.deleted": "Deleted.",
+        "notify.error": "There was an error. Please check the input.",
+        "notify.login_failed": "Invalid credentials.",
+        "notify.locked": "Too many attempts. Wait 5 minutes.",
+        "notify.storage_error": "Storage failed. Space may be full.",
+        "notify.image_processed": "Image processed.",
+
+        "cart.title": "Cart",
+        "cart.empty": "Your cart is empty.",
+        "cart.empty.cta": "Browse menu",
+        "cart.subtotal": "Subtotal",
+        "cart.vat": "VAT",
+        "cart.total": "Total",
+        "cart.checkout": "Proceed to Checkout",
+        "cart.note": "Note...",
+        "cart.close": "Close",
+
+        "checkout.title": "Checkout",
+        "checkout.customer": "Customer name",
+        "checkout.phone": "Phone",
+        "checkout.table": "Table number",
+        "checkout.notes": "Notes for the kitchen",
+        "checkout.type": "Order type",
+        "checkout.wait": "Estimated waiting time",
+        "checkout.minutes": "minutes",
+        "checkout.confirm": "Confirm Order",
+        "checkout.summary": "Order summary",
+
+        "success.title": "Order received!",
+        "success.message": "Your order has been sent to the kitchen.",
+        "success.order_number": "Order number",
+        "success.view_receipt": "View Receipt",
+        "success.close": "Close",
+
+        "pizza.builder": "Build Your Pizza",
+        "pizza.size": "Size",
+        "pizza.type": "Pizza type",
+        "pizza.remove_ingredients": "Remove ingredients",
+        "pizza.extras": "Extra requests (not guaranteed)",
+        "pizza.extras_note": "Restaurant staff decides later whether they can be fulfilled.",
+        "pizza.note": "Additional note",
+        "pizza.add": "Add Pizza",
+        "pizza.removed": "Without",
+        "pizza.extras_label": "Extra",
+        "ingredient.ullinj": "Olives",
+        "ingredient.speca": "Peppers (Fafarona)",
+        "extra.extra_majoneze": "Extra Mayonnaise",
+        "extra.extra_kecap": "Extra Ketchup",
+        "extra.extra_ullinj": "Extra Olives",
+        "extra.extra_fafarona": "Extra Peppers",
+
+        "kitchen.title": "Kitchen Display",
+        "kitchen.empty": "No active orders.",
+        "kitchen.back": "Back to website",
+        "kitchen.sound": "Sound",
+        "kitchen.customer": "Customer",
+        "kitchen.phone": "Phone",
+        "kitchen.table": "Table",
+        "kitchen.type": "Type",
+        "kitchen.print": "Print",
+        "kitchen.preparing": "Preparing",
+        "kitchen.ready": "Ready",
+        "kitchen.completed": "Completed",
+        "kitchen.cancelled": "Cancelled",
+
+        "receipt.title": "Receipt",
+        "receipt.order": "Order",
+        "receipt.date": "Date",
+        "receipt.customer": "Customer",
+        "receipt.thankyou": "Thank you for choosing SHARRI!",
+        "receipt.print": "Print Receipt",
+
+        "admin.login_title": "Admin Login",
+        "admin.username": "Username",
+        "admin.password": "Password",
+        "admin.signin": "Sign In",
+        "admin.logout": "Logout",
+        "admin.dashboard": "Dashboard",
+        "admin.orders": "Orders",
+        "admin.products": "Products",
+        "admin.categories": "Categories",
+        "admin.settings": "Settings",
+        "admin.users": "Users",
+        "admin.logs": "Activity Log",
+        "admin.today_orders": "Orders Today",
+        "admin.revenue_today": "Revenue Today",
+        "admin.orders_week": "Orders This Week",
+        "admin.orders_month": "Orders This Month",
+        "admin.customers": "Customers",
+        "admin.avg_order": "Average Order",
+        "admin.top_foods": "Top Foods",
+        "admin.top_drinks": "Top Drinks",
+        "admin.revenue_7_days": "Revenue Last 7 Days",
+        "admin.export": "Export CSV",
+        "admin.add_product": "Add Product",
+        "admin.add_category": "Add Category",
+        "admin.add_user": "Add User",
+        "admin.save": "Save",
+        "admin.cancel": "Cancel",
+        "admin.edit": "Edit",
+        "admin.delete": "Delete",
+        "admin.hide": "Hide",
+        "admin.show": "Show",
+        "admin.available": "Active",
+        "admin.unavailable": "Inactive",
+        "admin.price": "Price",
+        "admin.category": "Category",
+        "admin.image": "Image URL",
+        "admin.image_file": "Upload image",
+        "admin.name_sq": "Name (Albanian)",
+        "admin.name_en": "Name (English)",
+        "admin.desc_sq": "Description (Albanian)",
+        "admin.desc_en": "Description (English)",
+        "admin.popular": "Popular",
+        "admin.daily": "Daily",
+        "admin.hidden": "Hidden",
+        "admin.unit": "Unit (e.g. piece)",
+        "admin.sort": "Sort order",
+        "admin.role": "Role",
+        "admin.settings_restaurant": "Restaurant name",
+        "admin.settings_phone": "Phone",
+        "admin.settings_address": "Address",
+        "admin.settings_hours": "Opening hours",
+        "admin.settings_currency": "Currency",
+        "admin.settings_tax": "VAT %",
+        "admin.settings_tax_included": "VAT included in prices",
+        "admin.search_orders": "Search orders...",
+        "admin.all_statuses": "All statuses",
+        "admin.all_ranges": "All periods",
+        "admin.today": "Today",
+        "admin.week": "This week",
+        "admin.month": "This month",
+        "admin.view": "View",
+        "admin.no_data": "No data.",
+        "admin.customer_name": "Name",
+        "admin.items": "Items",
+        "admin.status": "Status",
+        "admin.date": "Date",
+        "admin.actions": "Actions",
+        "admin.total": "Total",
+
+        "common.close": "Close",
+        "common.back": "Back",
+        "common.yes": "Yes",
+        "common.no": "No",
+        "common.all": "All",
+        "common.confirm_delete": "Are you sure you want to delete?"
+      }
+    };
+
+    function t(key) {
+      return I18N[state.lang]?.[key] ?? I18N.en[key] ?? key;
+    }
+
+    /* Data helpers */
+    function getProduct(id) {
+      return db.products.find((p) => p.id === id);
+    }
+
+    function getCategory(id) {
+      return db.categories.find((c) => c.id === id) || { id, name: { sq: id, en: id } };
+    }
+
+    function categoryName(id) {
+      return getCategory(id).name[state.lang] || getCategory(id).name.sq;
+    }
+
+    function orderTypeLabel(type) {
+      return type === "dine_in" ? t("order.dine_in") : t("order.takeout");
+    }
+
+    function startOfDay(date = new Date()) {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function startOfWeek(date = new Date()) {
+      const d = new Date(date);
+      const day = (d.getDay() + 6) % 7;
+      d.setDate(d.getDate() - day);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function startOfMonth(date = new Date()) {
+      const d = new Date(date);
+      d.setDate(1);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function isNewProduct(product) {
+      return Date.now() - product.created < 14 * 24 * 3_600_000;
+    }
+
+    /* Sound */
+    let audioCtx = null;
+
+    function playSound(type = "new") {
+      try {
+        audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        oscillator.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = type === "new" ? 880 : type === "add" ? 620 : 480;
+        gain.gain.setValueAtTime(0.075, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.42);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.45);
+      } catch {
+        /* Audio can be blocked before user interaction. */
+      }
+    }
+
+    /* Toast */
+    function toast(message, type = "info") {
+      const root = $("#toastRoot");
+      const el = document.createElement("div");
+      el.className = `toast toast-${type}`;
+      el.textContent = message;
+      root.appendChild(el);
+
+      requestAnimationFrame(() => el.classList.add("show"));
+
+      setTimeout(() => {
+        el.classList.remove("show");
+        setTimeout(() => el.remove(), 300);
+      }, 3400);
+    }
+
+    /* Modal */
+    function openModal(html, className = "") {
+      const overlay = document.createElement("div");
+      overlay.className = "modal-overlay";
+      overlay.innerHTML = `<div class="modal ${className}" role="dialog" aria-modal="true">${html}</div>`;
+      $("#modalRoot").appendChild(overlay);
+      requestAnimationFrame(() => overlay.classList.add("open"));
+      return overlay;
+    }
+
+    function closeModal(overlay) {
+      if (!overlay) return;
+      overlay.classList.remove("open");
+      setTimeout(() => overlay.remove(), 230);
+    }
+
+    /* I18N rendering */
+    function applyI18n() {
+      $$("[data-i18n]").forEach((el) => {
+        el.textContent = t(el.dataset.i18n);
+      });
+
+      $$("[data-i18n-placeholder]").forEach((el) => {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+
+      document.documentElement.lang = state.lang === "sq" ? "sq" : "en";
+      document.title = `${db.settings.restaurantName} Restaurant | ${state.lang === "sq" ? "Eksperiencë Gastronomike" : "Gastronomic Experience"}`;
+    }
+
+    function renderSettings() {
+      $("#brandText").textContent = db.settings.restaurantName;
+      $("#settingAddress").textContent = db.settings.address;
+      $("#settingPhone").textContent = db.settings.phone;
+      $("#settingHours").textContent = db.settings.hours;
+    }
+
+    function renderOrderTypeButton() {
+      const label = $("#orderTypeLabel");
+      const icon = $("#orderTypeIcon");
+
+      if (!state.orderType) {
+        label.textContent = t("order.select");
+        icon.textContent = "•";
+        return;
+      }
+
+      label.textContent = orderTypeLabel(state.orderType);
+      icon.textContent = state.orderType === "dine_in" ? "🍽" : "🥡";
+    }
+
+    function setLanguage(lang, persist = true) {
+      state.lang = ["sq", "en"].includes(lang) ? lang : "sq";
+      if (persist) localStorage.setItem(LANG_KEY, state.lang);
+
+      applyI18n();
+      renderSettings();
+      renderCategoryChips();
+      renderSortOptions();
+      renderMenu();
+      renderCart();
+      renderOrderTypeButton();
+
+      if (location.hash.startsWith("#/kitchen")) renderKitchen(false);
+      if (location.hash.startsWith("#/admin")) renderAdmin();
+    }
+
+    function setOrderType(type, resumeCheckout = false) {
+      state.orderType = type;
+      localStorage.setItem(ORDER_TYPE_KEY, type);
+      $("#orderTypeModal").classList.add("hidden");
+      document.body.classList.remove("no-scroll");
+      renderOrderTypeButton();
+
+      if (resumeCheckout) openCheckout();
+    }
+
+    function showOrderTypeModal(resumeCheckout = false) {
+      state.resumeCheckout = resumeCheckout;
+      $("#orderTypeModal").classList.remove("hidden");
+      document.body.classList.add("no-scroll");
+    }
+
+    /* Cart */
+    function lineKey(item) {
+      if (item.type === "pizza" && item.pizza) {
+        const removed = [...(item.pizza.removed || [])].sort().join(".");
+        const extras = [...(item.pizza.extras || [])].sort().join(".");
+        return `${item.productId}|pizza|${item.pizza.sizeId}|${item.pizza.type}|${removed}|${extras}`;
+      }
+      return `${item.productId}|product`;
+    }
+
+    function computeCartTotals() {
+      const subtotal = state.cart.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
+      const rate = Number(db.settings.taxRate || 0) / 100;
+      let vat = 0;
+      let total = subtotal;
+
+      if (db.settings.taxIncluded) {
+        vat = subtotal - subtotal / (1 + rate);
+      } else {
+        vat = subtotal * rate;
+        total = subtotal + vat;
+      }
+
+      return { subtotal, vat, total, count: state.cart.reduce((sum, item) => sum + item.qty, 0) };
+    }
+
+    function addLine(item) {
+      item.key = lineKey(item);
+      const existing = state.cart.find((i) => i.key === item.key);
+
+      if (existing) existing.qty += item.qty;
+      else state.cart.push(item);
+
+      saveCart();
+      renderCart();
+      playSound("add");
+      toast(t("notify.added"), "success");
+
+      const badge = $("#cartBadge");
+      badge.classList.remove("bump");
+      void badge.offsetWidth;
+      badge.classList.add("bump");
+    }
+
+    function addToCart(product, options = {}) {
+      if (!product || product.hidden || !product.available) return;
+
+      addLine({
+        productId: product.id,
+        qty: options.qty || 1,
+        unitPrice: options.unitPrice ?? product.price,
+        type: options.type || "product",
+        pizza: options.pizza || null,
+        note: options.note || "",
+        name: options.name || product.name,
+        image: options.image || product.image,
+        category: options.category || product.category
+      });
+    }
+
+    function updateCartNote(key, note) {
+      const item = state.cart.find((i) => i.key === key);
+      if (!item) return;
+      item.note = note;
+      saveCart();
+    }
+
+    function changeCartQty(key, delta) {
+      const item = state.cart.find((i) => i.key === key);
+      if (!item) return;
+
+      item.qty += delta;
+      if (item.qty <= 0) state.cart = state.cart.filter((i) => i.key !== key);
+
+      saveCart();
+      renderCart();
+    }
+
+    function removeCartLine(key) {
+      state.cart = state.cart.filter((i) => i.key !== key);
+      saveCart();
+      renderCart();
+      toast(t("notify.removed"), "info");
+    }
+
+    function renderCart() {
+      const container = $("#cartItems");
+      const totals = computeCartTotals();
+
+      const badge = $("#cartBadge");
+      badge.textContent = String(totals.count);
+      badge.classList.toggle("hidden", totals.count === 0);
+
+      $("#cartSubtotal").textContent = formatMoney(totals.subtotal);
+      $("#cartVat").textContent = formatMoney(totals.vat);
+      $("#cartTotal").textContent = formatMoney(totals.total);
+      $("#checkoutBtn").disabled = state.cart.length === 0;
+
+      if (!state.cart.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+            <p>${esc(t("cart.empty"))}</p>
+            <button class="btn btn-gold" data-close-cart-and-scroll>${esc(t("cart.empty.cta"))}</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.cart.map((item) => {
+        const name = item.name[state.lang] || item.name.sq;
+        let details = "";
+
+        if (item.type === "pizza" && item.pizza) {
+          const removed = (item.pizza.removed || [])
+            .map((id) => t(`ingredient.${id}`))
+            .join(", ");
+
+          const extras = (item.pizza.extras || [])
+            .map((id) => t(`extra.${id}`))
+            .join(", ");
+
+          details = `
+            <div class="cart-meta">
+              ${esc(item.pizza.sizeName[state.lang] || item.pizza.sizeName.sq)} • ${esc(item.pizza.typeName[state.lang] || item.pizza.typeName.sq)}
+              ${removed ? `<br>${esc(t("pizza.removed"))}: ${esc(removed)}` : ""}
+              ${extras ? `<br>${esc(t("pizza.extras_label"))}: ${esc(extras)}` : ""}
+            </div>
+          `;
+        }
+
+        return `
+          <article class="cart-item" data-cart-key="${esc(item.key)}">
+            <img class="cart-thumb" src="${esc(item.image)}" alt="${esc(name)}" loading="lazy" decoding="async" />
+            <div class="cart-info">
+              <h4>${esc(name)}</h4>
+              ${details}
+              <textarea class="cart-note" data-key="${esc(item.key)}" placeholder="${esc(t("cart.note"))}">${esc(item.note || "")}</textarea>
+              <div class="cart-controls">
+                <div class="qty" aria-label="Quantity">
+                  <button data-cart-action="dec" data-key="${esc(item.key)}" aria-label="Decrease">−</button>
+                  <span>${item.qty}</span>
+                  <button data-cart-action="inc" data-key="${esc(item.key)}" aria-label="Increase">+</button>
+                </div>
+                <div class="line-price">${formatMoney(item.unitPrice * item.qty)}</div>
+                <button class="danger-icon" data-cart-action="remove" data-key="${esc(item.key)}" aria-label="Remove">✕</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openCart() {
+      $("#cartDrawer").classList.add("open");
+      $("#cartDrawer").setAttribute("aria-hidden", "false");
+      $("#backdrop").classList.remove("hidden");
+      document.body.classList.add("no-scroll");
+    }
+
+    function closeCart() {
+      $("#cartDrawer").classList.remove("open");
+      $("#cartDrawer").setAttribute("aria-hidden", "true");
+      $("#backdrop").classList.add("hidden");
+      document.body.classList.remove("no-scroll");
+    }
+
+    /* Menu */
+    function renderCategoryChips() {
+      const chips = [
+        { id: "all", label: t("filter.all"), active: state.filters.category === "all" && !state.filters.popular && !state.filters.daily },
+        ...db.categories
+          .slice()
+          .sort((a, b) => a.sort - b.sort)
+          .map((category) => ({
+            id: category.id,
+            label: category.name[state.lang] || category.name.sq,
+            active: state.filters.category === category.id
+          })),
+        { id: "popular", label: t("filter.popular"), active: state.filters.popular },
+        { id: "daily", label: t("filter.daily"), active: state.filters.daily }
+      ];
+
+      $("#categoryChips").innerHTML = chips
+        .map((chip) => `<button class="chip ${chip.active ? "active" : ""}" data-chip="${esc(chip.id)}">${esc(chip.label)}</button>`)
+        .join("");
+    }
+
+    function renderSortOptions() {
+      const options = [
+        ["featured", t("sort.featured")],
+        ["newest", t("sort.newest")],
+        ["price_asc", t("sort.price_asc")],
+        ["price_desc", t("sort.price_desc")]
+      ];
+
+      $("#sortSelect").innerHTML = options
+        .map(([value, label]) => `<option value="${value}" ${state.filters.sort === value ? "selected" : ""}>${esc(label)}</option>`)
+        .join("");
+    }
+
+    function getFilteredProducts() {
+      let list = db.products.filter((p) => !p.hidden);
+      const query = state.filters.q.trim().toLowerCase();
+
+      if (query) {
+        list = list.filter((p) => {
+          const name = `${p.name.sq} ${p.name.en}`.toLowerCase();
+          const desc = `${p.desc.sq} ${p.desc.en}`.toLowerCase();
+          const category = `${getCategory(p.category).name.sq} ${getCategory(p.category).name.en}`.toLowerCase();
+          return (
+            name.includes(query) ||
+            desc.includes(query) ||
+            category.includes(query) ||
+            String(p.price).includes(query)
+          );
+        });
+      }
+
+      if (state.filters.category !== "all") {
+        list = list.filter((p) => p.category === state.filters.category);
+      }
+
+      if (state.filters.popular) list = list.filter((p) => p.popular);
+      if (state.filters.daily) list = list.filter((p) => p.daily);
+
+      switch (state.filters.sort) {
+        case "newest":
+          list.sort((a, b) => b.created - a.created);
+          break;
+        case "price_asc":
+          list.sort((a, b) => a.price - b.price);
+          break;
+        case "price_desc":
+          list.sort((a, b) => b.price - a.price);
+          break;
+        default:
+          list.sort((a, b) => Number(b.popular) - Number(a.popular) || b.created - a.created);
+      }
+
+      return list;
+    }
+
+    function productPriceHTML(product) {
+      if (product.unit === "piece") {
+        return `${formatMoney(product.price)} <small>/ ${esc(t("unit.piece"))}</small>`;
+      }
+      return formatMoney(product.price);
+    }
+
+    function productCardHTML(product) {
+      const name = product.name[state.lang] || product.name.sq;
+      const desc = product.desc[state.lang] || product.desc.sq;
+      const favorite = state.favorites.includes(product.id);
+
+      const badges = [
+        product.popular ? `<span class="badge-pill">${esc(t("badge.popular"))}</span>` : "",
+        product.daily ? `<span class="badge-pill dark">${esc(t("badge.daily"))}</span>` : "",
+        isNewProduct(product) ? `<span class="badge-pill dark">${esc(t("badge.new"))}</span>` : "",
+        !product.available ? `<span class="badge-pill dark">${esc(t("product.unavailable"))}</span>` : ""
+      ].join("");
+
+      const cta = product.category === "pizza" ? t("pizza.configure") : t("add_to_cart");
+
+      return `
+        <article class="product-card reveal ${!product.available ? "out-of-stock" : ""}" data-product-id="${esc(product.id)}">
+          <div class="media">
+            <img src="${esc(product.image)}" alt="${esc(name)}" loading="lazy" decoding="async" />
+            <div class="badges">${badges}</div>
+            <button class="favorite ${favorite ? "active" : ""}" data-favorite="${esc(product.id)}" aria-label="Favorite">♥</button>
+          </div>
+
+          <div class="product-body">
+            <div class="product-top">
+              <h3>${esc(name)}</h3>
+              <div class="price">${productPriceHTML(product)}</div>
+            </div>
+
+            <p class="product-desc">${esc(desc)}</p>
+
+            <div class="card-actions">
+              <span class="category-label">${esc(categoryName(product.category))}</span>
+              <button class="btn btn-gold btn-sm" data-add="${esc(product.id)}" ${!product.available ? "disabled" : ""}>
+                ${esc(cta)}
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderMenu() {
+      const list = getFilteredProducts();
+      const grid = $("#productGrid");
+      const empty = $("#menuEmpty");
+
+      grid.innerHTML = list.map(productCardHTML).join("");
+      empty.classList.toggle("hidden", list.length > 0);
+      observeReveals();
+    }
+
+    function handleChip(id) {
+      if (id === "all") {
+        state.filters.category = "all";
+        state.filters.popular = false;
+        state.filters.daily = false;
+      } else if (id === "popular") {
+        state.filters.popular = !state.filters.popular;
+      } else if (id === "daily") {
+        state.filters.daily = !state.filters.daily;
+      } else {
+        state.filters.category = id;
+        state.filters.popular = false;
+        state.filters.daily = false;
+      }
+
+      renderCategoryChips();
+      renderMenu();
+    }
+
+    function toggleFavorite(productId) {
+      if (state.favorites.includes(productId)) {
+        state.favorites = state.favorites.filter((id) => id !== productId);
+      } else {
+        state.favorites.push(productId);
+      }
+
+      localStorage.setItem(FAV_KEY, JSON.stringify(state.favorites));
+      renderMenu();
+    }
+
+    /* Intersection Observer */
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    function observeReveals() {
+      $$(".reveal:not(.visible)").forEach((el) => revealObserver.observe(el));
+    }
+
+    /* Pizza builder */
+    function openPizzaBuilder(sizeProduct) {
+      const sizes = db.products
+        .filter((p) => p.category === "pizza" && !p.hidden)
+        .sort((a, b) => a.price - b.price);
+
+      const sizeOptions = sizes
+        .map((size) => {
+          const checked = size.id === sizeProduct.id ? "checked" : "";
+          const label = size.name[state.lang] || size.name.sq;
+          return `
+            <label class="checkline">
+              <input type="radio" name="size" value="${esc(size.id)}" ${checked} />
+              <span>${esc(label)} • ${formatMoney(size.price)}</span>
+            </label>
+          `;
+        })
+        .join("");
+
+      const typeOptions = PIZZA_TYPES
+        .map((type, index) => `
+          <label class="checkline">
+            <input type="radio" name="type" value="${esc(type.id)}" ${index === 0 ? "checked" : ""} />
+            <span>${esc(type.name[state.lang] || type.name.sq)}</span>
+          </label>
+        `)
+        .join("");
+
+      const removableOptions = PIZZA_REMOVABLE
+        .map((ingredient) => `
+          <label class="checkline">
+            <input type="checkbox" name="remove_${esc(ingredient.id)}" checked />
+            <span>${esc(ingredient.name[state.lang] || ingredient.name.sq)}</span>
+          </label>
+        `)
+        .join("");
+
+      const extraOptions = PIZZA_EXTRAS
+        .map((extra) => `
+          <label class="checkline">
+            <input type="checkbox" name="extra_${esc(extra.id)}" />
+            <span>${esc(extra.name[state.lang] || extra.name.sq)}</span>
+          </label>
+        `)
+        .join("");
+
+      openModal(`
+        <div class="modal-header">
+          <div>
+            <h3>${esc(t("pizza.builder"))}</h3>
+            <div class="modal-sub">${esc(sizeProduct.name[state.lang] || sizeProduct.name.sq)}</div>
+          </div>
+          <button class="icon-btn" data-close aria-label="${esc(t("common.close"))}">✕</button>
+        </div>
+
+        <form id="pizzaForm" class="form-grid">
+          <div class="panel-box">
+            <div class="panel-title">${esc(t("pizza.size"))}</div>
+            <div class="radio-grid">${sizeOptions}</div>
+          </div>
+
+          <div class="panel-box">
+            <div class="panel-title">${esc(t("pizza.type"))}</div>
+            <div class="radio-grid">${typeOptions}</div>
+          </div>
+
+          <div class="panel-box">
+            <div class="panel-title">${esc(t("pizza.remove_ingredients"))}</div>
+            <div class="check-grid">${removableOptions}</div>
+          </div>
+
+          <div class="panel-box">
+            <div class="panel-title">${esc(t("pizza.extras"))}</div>
+            <div class="modal-sub">${esc(t("pizza.extras_note"))}</div>
+            <div class="check-grid">${extraOptions}</div>
+          </div>
+
+          <div class="field">
+            <label for="pizzaNote">${esc(t("pizza.note"))}</label>
+            <textarea id="pizzaNote" name="note" class="textarea"></textarea>
+          </div>
+
+          <div class="split">
+            <strong id="pizzaPrice" class="price">${formatMoney(sizeProduct.price)}</strong>
+            <button type="submit" class="btn btn-gold btn-lg">${esc(t("pizza.add"))}</button>
+          </div>
+        </form>
+      `, "pizza-builder");
+    }
+
+    function updatePizzaPrice() {
+      const priceEl = $("#pizzaPrice");
+      const selected = $('input[name="size"]:checked');
+      if (!priceEl || !selected) return;
+
+      const size = getProduct(selected.value);
+      if (size) priceEl.textContent = formatMoney(size.price);
+    }
+
+    function handlePizzaSubmit(form) {
+      const formData = new FormData(form);
+      const size = getProduct(String(formData.get("size")));
+      const type = PIZZA_TYPES.find((item) => item.id === formData.get("type"));
+      if (!size || !type) return;
+
+      const removed = PIZZA_REMOVABLE
+        .filter((ingredient) => !formData.get(`remove_${ingredient.id}`))
+        .map((ingredient) => ingredient.id);
+
+      const extras = PIZZA_EXTRAS
+        .filter((extra) => formData.get(`extra_${extra.id}`))
+        .map((extra) => extra.id);
+
+      const note = String(formData.get("note") || "").trim();
+
+      addLine({
+        productId: size.id,
+        qty: 1,
+        unitPrice: size.price,
+        type: "pizza",
+        pizza: {
+          sizeId: size.id,
+          sizeName: size.name,
+          type: type.id,
+          typeName: type.name,
+          removed,
+          extras
+        },
+        note,
+        name: {
+          sq: `${type.name.sq} (${size.name.sq})`,
+          en: `${type.name.en} (${size.name.en})`
+        },
+        image: size.image,
+        category: "pizza"
+      });
+
+      closeModal($(".modal-overlay"));
+    }
+
+    /* Checkout */
+    function estimateWaitingMinutes() {
+      const totals = computeCartTotals();
+      const hasGrill = state.cart.some((item) => item.category === "skare");
+      let minutes = state.orderType === "dine_in" ? 14 : 11;
+      minutes += Math.min(18, totals.count * 2);
+      if (hasGrill) minutes += 5;
+      return Math.min(45, minutes);
+    }
+
+    function openCheckout() {
+      if (!state.cart.length) return;
+
+      if (!state.orderType) {
+        showOrderTypeModal(true);
+        return;
+      }
+
+      closeCart();
+
+      const totals = computeCartTotals();
+      const summary = state.cart
+        .map((item) => {
+          const name = item.name[state.lang] || item.name.sq;
+          return `<div class="summary-row"><span>${item.qty}× ${esc(name)}</span><strong>${formatMoney(item.unitPrice * item.qty)}</strong></div>`;
+        })
+        .join("");
+
+      const overlay = openModal(`
+        <div class="modal-header">
+          <div>
+            <h3>${esc(t("checkout.title"))}</h3>
+            <div class="modal-sub">${esc(orderTypeLabel(state.orderType))}</div>
+          </div>
+          <button class="icon-btn" data-close aria-label="${esc(t("common.close"))}">✕</button>
+        </div>
+
+        <div class="panel-box checkout-summary">
+          <div class="panel-title">${esc(t("checkout.summary"))}</div>
+          <div class="summary-list">${summary}</div>
+          <div class="summary-list">
+            <div class="summary-row"><span>${esc(t("cart.subtotal"))}</span><strong>${formatMoney(totals.subtotal)}</strong></div>
+            <div class="summary-row"><span>${esc(t("cart.vat"))}</span><strong>${formatMoney(totals.vat)}</strong></div>
+            <div class="summary-row"><strong>${esc(t("cart.total"))}</strong><strong>${formatMoney(totals.total)}</strong></div>
+          </div>
+        </div>
+
+        <form id="checkoutForm" class="form-grid two-col">
+          <div class="field">
+            <label for="checkoutName">${esc(t("checkout.customer"))}</label>
+            <input id="checkoutName" name="customer" class="input" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="checkoutPhone">${esc(t("checkout.phone"))}</label>
+            <input id="checkoutPhone" name="phone" class="input" autocomplete="tel" required />
+          </div>
+
+          <div class="field">
+            <label for="checkoutOrderType">${esc(t("checkout.type"))}</label>
+            <select id="checkoutOrderType" name="type" class="select-field">
+              <option value="dine_in" ${state.orderType === "dine_in" ? "selected" : ""}>${esc(t("order.dine_in"))}</option>
+              <option value="takeout" ${state.orderType === "takeout" ? "selected" : ""}>${esc(t("order.takeout"))}</option>
+            </select>
+          </div>
+
+          <div class="field ${state.orderType === "takeout" ? "hidden" : ""}" id="checkoutTableField">
+            <label for="checkoutTable">${esc(t("checkout.table"))}</label>
+            <input id="checkoutTable" name="table" class="input" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="checkoutNotes">${esc(t("checkout.notes"))}</label>
+            <textarea id="checkoutNotes" name="notes" class="textarea"></textarea>
+          </div>
+
+          <div class="panel-box" style="grid-column: 1 / -1;">
+            <div class="summary-row">
+              <span>${esc(t("checkout.wait"))}</span>
+              <strong id="checkoutEstimate">${estimateWaitingMinutes()} ${esc(t("checkout.minutes"))}</strong>
+            </div>
+          </div>
+
+          <div class="right" style="grid-column: 1 / -1;">
+            <button type="button" class="btn btn-dark" data-close>${esc(t("admin.cancel"))}</button>
+            <button type="submit" class="btn btn-gold btn-lg">${esc(t("checkout.confirm"))}</button>
+          </div>
+        </form>
+      `);
+
+      $("#checkoutOrderType", overlay).addEventListener("change", (event) => {
+        state.orderType = event.target.value;
+        localStorage.setItem(ORDER_TYPE_KEY, state.orderType);
+        $("#checkoutTableField", overlay).classList.toggle("hidden", state.orderType === "takeout");
+        renderOrderTypeButton();
+      });
+    }
+
+    function handleCheckoutSubmit(form) {
+      const formData = new FormData(form);
+      const customer = String(formData.get("customer") || "").trim();
+      const phone = String(formData.get("phone") || "").trim();
+      const type = String(formData.get("type") || state.orderType);
+      const table = String(formData.get("table") || "").trim();
+      const notes = String(formData.get("notes") || "").trim();
+
+      if (customer.length < 2 || !/^[+0-9\s\/-]{6,20}$/.test(phone)) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      if (type === "dine_in" && !table) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      state.orderType = type;
+      localStorage.setItem(ORDER_TYPE_KEY, type);
+
+      const totals = computeCartTotals();
+      const now = new Date();
+      const numberDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+      db.counters.orders += 1;
+
+      const order = {
+        id: uuid(),
+        number: `SH-${numberDate}-${String(db.counters.orders).padStart(3, "0")}`,
+        createdAt: now.toISOString(),
+        type,
+        table: type === "dine_in" ? table : "",
+        customer,
+        phone,
+        note: notes,
+        items: structuredClone(state.cart),
+        subtotal: totals.subtotal,
+        vat: totals.vat,
+        total: totals.total,
+        itemCount: totals.count,
+        status: "preparing",
+        estimatedMinutes: estimateWaitingMinutes(),
+        lang: state.lang
+      };
+
+      db.orders.unshift(order);
+
+      const existingCustomer = db.customers.find((c) => c.phone === phone);
+      if (existingCustomer) {
+        existingCustomer.name = customer;
+        existingCustomer.orders += 1;
+        existingCustomer.totalSpent += totals.total;
+        existingCustomer.lastVisit = order.createdAt;
+      } else {
+        db.customers.push({
+          id: uuid(),
+          name: customer,
+          phone,
+          orders: 1,
+          totalSpent: totals.total,
+          firstVisit: order.createdAt,
+          lastVisit: order.createdAt
+        });
+      }
+
+      logActivity(`Order ${order.number} created`);
+      saveDB();
+
+      state.cart = [];
+      saveCart();
+      renderCart();
+      closeModal($(".modal-overlay"));
+      openSuccessModal(order);
+      playSound("success");
+      toast(t("notify.order_success"), "success");
+    }
+
+    function openSuccessModal(order) {
+      openModal(`
+        <div class="center stack">
+          <div style="font-size:4rem;">✨</div>
+          <h3 style="font-family: var(--font-display); font-size:2.3rem;">${esc(t("success.title"))}</h3>
+          <p class="text-muted">${esc(t("success.message"))}</p>
+          <div class="panel-box">
+            <div class="summary-row">
+              <span>${esc(t("success.order_number"))}</span>
+              <strong>${esc(order.number)}</strong>
+            </div>
+            <div class="summary-row">
+              <span>${esc(t("cart.total"))}</span>
+              <strong>${formatMoney(order.total)}</strong>
+            </div>
+            <div class="summary-row">
+              <span>${esc(t("checkout.wait"))}</span>
+              <strong>${order.estimatedMinutes} ${esc(t("checkout.minutes"))}</strong>
+            </div>
+          </div>
+          <div class="right">
+            <button class="btn btn-dark" data-close>${esc(t("success.close"))}</button>
+            <button class="btn btn-gold" data-receipt-open="${esc(order.id)}">${esc(t("success.view_receipt"))}</button>
+          </div>
+        </div>
+      `);
+    }
+
+    /* Receipt */
+    function openReceipt(orderId) {
+      const order = db.orders.find((o) => o.id === orderId);
+      if (!order) return;
+
+      const items = order.items
+        .map((item) => {
+          const name = item.name[state.lang] || item.name.sq;
+          let details = "";
+
+          if (item.type === "pizza" && item.pizza) {
+            const removed = (item.pizza.removed || []).map((id) => t(`ingredient.${id}`)).join(", ");
+            const extras = (item.pizza.extras || []).map((id) => t(`extra.${id}`)).join(", ");
+
+            details = [
+              item.pizza.typeName[state.lang] || item.pizza.typeName.sq,
+              removed ? `${t("pizza.removed")}: ${removed}` : "",
+              extras ? `${t("pizza.extras_label")}: ${extras}` : "",
+              item.note || ""
+            ].filter(Boolean).join(" • ");
+          } else if (item.note) {
+            details = item.note;
+          }
+
+          return `
+            <div class="receipt-item">
+              <div class="receipt-line">
+                <span>${item.qty}× ${esc(name)}</span>
+                <strong>${formatMoney(item.unitPrice * item.qty)}</strong>
+              </div>
+              ${details ? `<small>${esc(details)}</small>` : ""}
+            </div>
+          `;
+        })
+        .join("");
+
+      const qrData = encodeURIComponent(`SHARRI ${order.number} ${order.total.toFixed(2)} EUR ${order.createdAt}`);
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${qrData}`;
+
+      openModal(`
+        <div class="modal-header">
+          <h3>${esc(t("receipt.title"))}</h3>
+          <button class="icon-btn" data-close aria-label="${esc(t("common.close"))}">✕</button>
+        </div>
+
+        <div class="receipt" id="receiptArea">
+          <div class="receipt-header">
+            <div class="receipt-brand">${esc(db.settings.restaurantName)}</div>
+            <div>${esc(db.settings.address)}</div>
+            <div>${esc(db.settings.phone)}</div>
+          </div>
+
+          <div class="receipt-divider"></div>
+
+          <div class="receipt-line"><span>${esc(t("receipt.order"))}</span><strong>${esc(order.number)}</strong></div>
+          <div class="receipt-line"><span>${esc(t("receipt.date"))}</span><strong>${esc(formatDate(order.createdAt))}</strong></div>
+          <div class="receipt-line"><span>${esc(t("receipt.customer"))}</span><strong>${esc(order.customer)}</strong></div>
+          <div class="receipt-line"><span>${esc(t("checkout.type"))}</span><strong>${esc(orderTypeLabel(order.type))}</strong></div>
+          ${order.table ? `<div class="receipt-line"><span>${esc(t("checkout.table"))}</span><strong>${esc(order.table)}</strong></div>` : ""}
+
+          <div class="receipt-divider"></div>
+          <div class="receipt-items">${items}</div>
+          <div class="receipt-divider"></div>
+
+          <div class="receipt-line"><span>${esc(t("cart.subtotal"))}</span><strong>${formatMoney(order.subtotal)}</strong></div>
+          <div class="receipt-line"><span>${esc(t("cart.vat"))}</span><strong>${formatMoney(order.vat)}</strong></div>
+          <div class="receipt-line"><strong>${esc(t("cart.total"))}</strong><strong>${formatMoney(order.total)}</strong></div>
+
+          <div class="receipt-qr">
+            <img src="${esc(qrUrl)}" alt="QR Code" loading="lazy" />
+            <div>${esc(order.number)}</div>
+          </div>
+
+          <div class="receipt-thanks">${esc(t("receipt.thankyou"))}</div>
+        </div>
+
+        <div class="right">
+          <button class="btn btn-dark" data-close>${esc(t("common.close"))}</button>
+          <button class="btn btn-gold" data-receipt-print>${esc(t("receipt.print"))}</button>
+        </div>
+      `);
+    }
+
+    /* Kitchen Display System */
+    function renderKitchen(checkForNew = false) {
+      if (checkForNew) syncKnownOrders();
+
+      const orders = db.orders
+        .filter((order) => ["preparing", "ready"].includes(order.status))
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const cards = orders.length
+        ? orders.map(orderCardHTML).join("")
+        : `<div class="empty-state"><div class="empty-icon">👨‍🍳</div><p>${esc(t("kitchen.empty"))}</p></div>`;
+
+      $("#routeView").innerHTML = `
+        <div class="kds">
+          <div class="kds-topbar">
+            <div>
+              <div class="kds-title">${esc(t("kitchen.title"))}</div>
+              <div class="text-muted">${formatDate(new Date())}</div>
+            </div>
+
+            <div class="right">
+              <label class="checkline">
+                <input type="checkbox" id="kdsSoundToggle" ${state.kdsSound ? "checked" : ""} />
+                <span>${esc(t("kitchen.sound"))}</span>
+              </label>
+              <a class="btn btn-dark" href="#/">${esc(t("kitchen.back"))}</a>
+            </div>
+          </div>
+
+          <div class="kds-grid">${cards}</div>
+        </div>
+      `;
+    }
+
+    function orderCardHTML(order) {
+      const items = order.items
+        .map((item) => {
+          const name = item.name[state.lang] || item.name.sq;
+          let details = "";
+
+          if (item.type === "pizza" && item.pizza) {
+            const removed = (item.pizza.removed || []).map((id) => t(`ingredient.${id}`)).join(", ");
+            const extras = (item.pizza.extras || []).map((id) => t(`extra.${id}`)).join(", ");
+
+            details = [
+              item.pizza.sizeName[state.lang] || item.pizza.sizeName.sq,
+              item.pizza.typeName[state.lang] || item.pizza.typeName.sq,
+              removed ? `${t("pizza.removed")}: ${removed}` : "",
+              extras ? `${t("pizza.extras_label")}: ${extras}` : ""
+            ].filter(Boolean).join(" • ");
+          }
+
+          return `
+            <div class="order-item">
+              <div class="order-item-head">
+                <strong>${item.qty}× ${esc(name)}</strong>
+                <strong>${formatMoney(item.unitPrice * item.qty)}</strong>
+              </div>
+              ${details ? `<div class="order-item-details">${esc(details)}</div>` : ""}
+              ${item.note ? `<div class="order-item-details">${esc(item.note)}</div>` : ""}
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <article class="order-card status-${esc(order.status)}" data-order-id="${esc(order.id)}">
+          <div class="order-card-top">
+            <div>
+              <div class="order-number">${esc(order.number)}</div>
+              <div class="order-time">${esc(formatDate(order.createdAt))}</div>
+            </div>
+            <span class="status-pill ${esc(order.status)}">${esc(t(`kitchen.${order.status}`))}</span>
+          </div>
+
+          <div class="order-card-body">
+            <div class="order-meta">
+              <div><strong>${esc(t("kitchen.customer"))}:</strong> ${esc(order.customer)}</div>
+              <div><strong>${esc(t("kitchen.phone"))}:</strong> ${esc(order.phone)}</div>
+              <div><strong>${esc(t("kitchen.type"))}:</strong> ${esc(orderTypeLabel(order.type))}</div>
+              ${order.table ? `<div><strong>${esc(t("kitchen.table"))}:</strong> ${esc(order.table)}</div>` : ""}
+              <div><strong>${esc(t("checkout.wait"))}:</strong> ${order.estimatedMinutes} ${esc(t("checkout.minutes"))}</div>
+            </div>
+
+            <div class="order-items">${items}</div>
+
+            ${order.note ? `<div class="order-note">${esc(order.note)}</div>` : ""}
+          </div>
+
+          <div class="order-card-actions">
+            ${order.status === "preparing"
+              ? `<button class="btn btn-gold" data-kitchen-action="status" data-order-id="${esc(order.id)}" data-status="ready">${esc(t("kitchen.ready"))}</button>`
+              : `<button class="btn btn-dark" data-kitchen-action="status" data-order-id="${esc(order.id)}" data-status="completed">${esc(t("kitchen.completed"))}</button>`
+            }
+            <button class="btn btn-danger" data-kitchen-action="status" data-order-id="${esc(order.id)}" data-status="cancelled">${esc(t("kitchen.cancelled"))}</button>
+            <button class="btn btn-ghost" data-kitchen-action="print" data-order-id="${esc(order.id)}">${esc(t("kitchen.print"))}</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function syncKnownOrders() {
+      let hasNew = false;
+
+      db.orders.forEach((order) => {
+        if (!state.knownOrders.has(order.id)) {
+          state.knownOrders.add(order.id);
+          hasNew = true;
+        }
+      });
+
+      if (hasNew && state.kdsSound) playSound("new");
+    }
+
+    function updateOrderStatus(orderId, status) {
+      const order = db.orders.find((o) => o.id === orderId);
+      if (!order) return;
+
+      order.status = status;
+      order.updatedAt = new Date().toISOString();
+      saveDB();
+      logActivity(`Order ${order.number} status changed to ${status}`);
+
+      if (location.hash.startsWith("#/kitchen")) renderKitchen(false);
+      if (location.hash.startsWith("#/admin")) renderAdminSection();
+    }
+
+    /* Admin */
+    async function ensureAdminUser() {
+      if (!db.users.length) {
+        db.users.push({
+          id: uuid(),
+          username: "admin",
+          passwordHash: await hashPassword("admin123"),
+          role: "admin",
+          createdAt: new Date().toISOString()
+        });
+        saveDB();
+      }
+    }
+
+    function renderAdmin() {
+      if (!state.user) {
+        renderAdminLogin();
+        return;
+      }
+
+      renderAdminShell();
+    }
+
+    function renderAdminLogin() {
+      $("#routeView").innerHTML = `
+        <div class="login-shell">
+          <form id="adminLoginForm" class="login-card" novalidate>
+            <div class="center stack">
+              <div class="brand-mark" style="width:72px;height:72px;font-size:2.1rem;border-radius:24px;">S</div>
+              <h2 style="font-family: var(--font-display); font-size:2.3rem;">${esc(t("admin.login_title"))}</h2>
+            </div>
+
+            <div class="field">
+              <label for="adminUsername">${esc(t("admin.username"))}</label>
+              <input id="adminUsername" name="username" class="input" autocomplete="username" required />
+            </div>
+
+            <div class="field">
+              <label for="adminPassword">${esc(t("admin.password"))}</label>
+              <input id="adminPassword" name="password" type="password" class="input" autocomplete="current-password" required />
+            </div>
+
+            <button class="btn btn-gold btn-lg btn-block" type="submit">${esc(t("admin.signin"))}</button>
+            <a class="btn btn-dark btn-block" href="#/">${esc(t("common.back"))}</a>
+          </form>
+        </div>
+      `;
+    }
+
+    async function handleAdminLogin(form) {
+      const lockRaw = localStorage.getItem(LOGIN_LIMIT_KEY);
+      const lock = lockRaw ? JSON.parse(lockRaw) : { count: 0, until: 0 };
+
+      if (lock.until > Date.now()) {
+        toast(t("notify.locked"), "error");
+        return;
+      }
+
+      const formData = new FormData(form);
+      const username = String(formData.get("username") || "").trim().toLowerCase();
+      const password = String(formData.get("password") || "");
+      const passwordHash = await hashPassword(password);
+
+      const user = db.users.find((u) => u.username.toLowerCase() === username && u.passwordHash === passwordHash);
+
+      if (!user) {
+        lock.count += 1;
+        if (lock.count >= 5) {
+          lock.until = Date.now() + 5 * 60 * 1000;
+          lock.count = 0;
+        }
+        localStorage.setItem(LOGIN_LIMIT_KEY, JSON.stringify(lock));
+        toast(t("notify.login_failed"), "error");
+        return;
+      }
+
+      localStorage.removeItem(LOGIN_LIMIT_KEY);
+      state.user = { id: user.id, username: user.username, role: user.role };
+      sessionStorage.setItem("sharri_user", JSON.stringify(state.user));
+      logActivity("Admin login");
+      renderAdmin();
+    }
+
+    function renderAdminShell() {
+      const sections = [
+        ["overview", t("admin.dashboard")],
+        ["orders", t("admin.orders")],
+        ["products", t("admin.products")],
+        ["categories", t("admin.categories")],
+        ["settings", t("admin.settings")],
+        ["users", t("admin.users")],
+        ["logs", t("admin.logs")]
+      ];
+
+      $("#routeView").innerHTML = `
+        <div class="admin">
+          <aside class="admin-sidebar">
+            <div class="admin-brand">${esc(db.settings.restaurantName)}</div>
+            <nav class="admin-nav" aria-label="Admin">
+              ${sections.map(([id, label]) => `
+                <button data-admin-section="${id}" class="${state.adminSection === id ? "active" : ""}">${esc(label)}</button>
+              `).join("")}
+            </nav>
+            <button class="btn btn-dark" data-admin-logout>${esc(t("admin.logout"))}</button>
+            <a class="btn btn-ghost" href="#/">${esc(t("kitchen.back"))}</a>
+          </aside>
+
+          <section class="admin-main" id="adminContent" aria-live="polite"></section>
+        </div>
+      `;
+
+      renderAdminSection();
+    }
+
+    function renderAdminSection() {
+      const content = $("#adminContent");
+      if (!content) return;
+
+      $$(".admin-nav button").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.adminSection === state.adminSection);
+      });
+
+      switch (state.adminSection) {
+        case "orders": return renderAdminOrders();
+        case "products": return renderAdminProducts();
+        case "categories": return renderAdminCategories();
+        case "settings": return renderAdminSettings();
+        case "users": return renderAdminUsers();
+        case "logs": return renderAdminLogs();
+        default: return renderAdminOverview();
+      }
+    }
+
+    function getValidOrders() {
+      return db.orders.filter((order) => order.status !== "cancelled");
+    }
+
+    function renderAdminOverview() {
+      const validOrders = getValidOrders();
+      const today = startOfDay();
+      const week = startOfWeek();
+      const month = startOfMonth();
+
+      const ordersToday = validOrders.filter((o) => new Date(o.createdAt) >= today);
+      const ordersWeek = validOrders.filter((o) => new Date(o.createdAt) >= week);
+      const ordersMonth = validOrders.filter((o) => new Date(o.createdAt) >= month);
+      const revenueToday = ordersToday.reduce((sum, o) => sum + o.total, 0);
+      const averageOrder = ordersToday.length ? revenueToday / ordersToday.length : 0;
+
+      const days = [...Array(7)].map((_, index) => {
+        const day = new Date();
+        day.setHours(0, 0, 0, 0);
+        day.setDate(day.getDate() - (6 - index));
+        const next = new Date(day);
+        next.setDate(day.getDate() + 1);
+
+        const value = validOrders
+          .filter((o) => {
+            const createdAt = new Date(o.createdAt);
+            return createdAt >= day && createdAt < next;
+          })
+          .reduce((sum, o) => sum + o.total, 0);
+
+        return {
+          label: new Intl.DateTimeFormat(state.lang === "sq" ? "sq-AL" : "en-GB", { weekday: "short" }).format(day),
+          value
+        };
+      });
+
+      const productMap = new Map();
+
+      validOrders.forEach((order) => {
+        order.items.forEach((item) => {
+          const key = item.productId || item.name.sq;
+          const entry = productMap.get(key) || {
+            label: item.name[state.lang] || item.name.sq,
+            category: item.category || "skare",
+            count: 0,
+            revenue: 0
+          };
+
+          entry.count += item.qty;
+          entry.revenue += item.qty * item.unitPrice;
+          productMap.set(key, entry);
+        });
+      });
+
+      const top = [...productMap.values()].sort((a, b) => b.count - a.count);
+      const topFoods = top.filter((item) => item.category !== "pije").slice(0, 5);
+      const topDrinks = top.filter((item) => item.category === "pije").slice(0, 5);
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.dashboard"))}</h2>
+          <div class="text-muted">${esc(state.user.username)} • ${formatDate(new Date())}</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.today_orders"))}</div><div class="stat-value">${ordersToday.length}</div></div>
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.revenue_today"))}</div><div class="stat-value">${formatMoney(revenueToday)}</div></div>
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.orders_week"))}</div><div class="stat-value">${ordersWeek.length}</div></div>
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.orders_month"))}</div><div class="stat-value">${ordersMonth.length}</div></div>
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.customers"))}</div><div class="stat-value">${db.customers.length}</div></div>
+          <div class="stat-card"><div class="stat-label">${esc(t("admin.avg_order"))}</div><div class="stat-value">${formatMoney(averageOrder)}</div></div>
+        </div>
+
+        <div class="panel">
+          <h3>${esc(t("admin.revenue_7_days"))}</h3>
+          <div class="chart">${barChartSVG(days)}</div>
+        </div>
+
+        <div class="panel">
+          <h3>${esc(t("admin.top_foods"))}</h3>
+          ${topListHTML(topFoods)}
+        </div>
+
+        <div class="panel">
+          <h3>${esc(t("admin.top_drinks"))}</h3>
+          ${topListHTML(topDrinks)}
+        </div>
+      `;
+    }
+
+    function barChartSVG(items) {
+      const width = 760;
+      const height = 240;
+      const pad = 34;
+      const gap = 14;
+      const max = Math.max(...items.map((item) => item.value), 1);
+      const barWidth = (width - pad * 2 - gap * (items.length - 1)) / items.length;
+
+      const bars = items.map((item, index) => {
+        const barHeight = (item.value / max) * (height - pad * 2);
+        const x = pad + index * (barWidth + gap);
+        const y = height - pad - barHeight;
+
+        return `
+          <rect class="chart-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="10"></rect>
+          <text class="chart-label" x="${(x + barWidth / 2).toFixed(1)}" y="${height - 10}" text-anchor="middle">${esc(item.label)}</text>
+        `;
+      }).join("");
+
+      return `
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Chart">
+          <defs>
+            <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f1d18a"></stop>
+              <stop offset="100%" stop-color="#d8ae5f"></stop>
+            </linearGradient>
+          </defs>
+          ${bars}
+        </svg>
+      `;
+    }
+
+    function topListHTML(items) {
+      if (!items.length) return `<p class="text-muted">${esc(t("admin.no_data"))}</p>`;
+
+      return `
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>${esc(t("admin.products"))}</th>
+                <th>${esc(t("admin.items"))}</th>
+                <th>${esc(t("admin.total"))}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map((item, index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${esc(item.label)}</td>
+                  <td>${item.count}</td>
+                  <td>${formatMoney(item.revenue)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminOrders() {
+      const filters = state.adminOrderFilters;
+      const today = startOfDay();
+      const week = startOfWeek();
+      const month = startOfMonth();
+
+      let orders = db.orders.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      if (filters.q) {
+        const q = filters.q.toLowerCase();
+        orders = orders.filter((order) =>
+          [order.number, order.customer, order.phone, order.table]
+            .join(" ")
+            .toLowerCase()
+            .includes(q)
+        );
+      }
+
+      if (filters.status !== "all") {
+        orders = orders.filter((order) => order.status === filters.status);
+      }
+
+      if (filters.range === "today") orders = orders.filter((o) => new Date(o.createdAt) >= today);
+      if (filters.range === "week") orders = orders.filter((o) => new Date(o.createdAt) >= week);
+      if (filters.range === "month") orders = orders.filter((o) => new Date(o.createdAt) >= month);
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.orders"))}</h2>
+          <div class="right">
+            <button class="btn btn-gold" data-admin-export>${esc(t("admin.export"))}</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="split">
+            <input id="adminOrderSearch" class="input" style="max-width:360px;" placeholder="${esc(t("admin.search_orders"))}" value="${esc(filters.q)}" />
+            <div class="right">
+              <select id="adminOrderStatus" class="select-field" style="min-width:180px;">
+                <option value="all">${esc(t("admin.all_statuses"))}</option>
+                <option value="preparing" ${filters.status === "preparing" ? "selected" : ""}>${esc(t("kitchen.preparing"))}</option>
+                <option value="ready" ${filters.status === "ready" ? "selected" : ""}>${esc(t("kitchen.ready"))}</option>
+                <option value="completed" ${filters.status === "completed" ? "selected" : ""}>${esc(t("kitchen.completed"))}</option>
+                <option value="cancelled" ${filters.status === "cancelled" ? "selected" : ""}>${esc(t("kitchen.cancelled"))}</option>
+              </select>
+
+              <select id="adminOrderRange" class="select-field" style="min-width:180px;">
+                <option value="all">${esc(t("admin.all_ranges"))}</option>
+                <option value="today" ${filters.range === "today" ? "selected" : ""}>${esc(t("admin.today"))}</option>
+                <option value="week" ${filters.range === "week" ? "selected" : ""}>${esc(t("admin.week"))}</option>
+                <option value="month" ${filters.range === "month" ? "selected" : ""}>${esc(t("admin.month"))}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>${esc(t("receipt.order"))}</th>
+                  <th>${esc(t("admin.date"))}</th>
+                  <th>${esc(t("admin.customer_name"))}</th>
+                  <th>${esc(t("checkout.type"))}</th>
+                  <th>${esc(t("admin.total"))}</th>
+                  <th>${esc(t("admin.status"))}</th>
+                  <th>${esc(t("admin.actions"))}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${orders.length ? orders.map((order) => `
+                  <tr>
+                    <td><strong>${esc(order.number)}</strong></td>
+                    <td>${esc(formatDate(order.createdAt))}</td>
+                    <td>${esc(order.customer)}<br><span class="text-muted">${esc(order.phone)}</span></td>
+                    <td>${esc(orderTypeLabel(order.type))}${order.table ? `<br>${esc(order.table)}` : ""}</td>
+                    <td>${formatMoney(order.total)}</td>
+                    <td>
+                      <select class="select-field order-status-select" data-order-id="${esc(order.id)}">
+                        <option value="preparing" ${order.status === "preparing" ? "selected" : ""}>${esc(t("kitchen.preparing"))}</option>
+                        <option value="ready" ${order.status === "ready" ? "selected" : ""}>${esc(t("kitchen.ready"))}</option>
+                        <option value="completed" ${order.status === "completed" ? "selected" : ""}>${esc(t("kitchen.completed"))}</option>
+                        <option value="cancelled" ${order.status === "cancelled" ? "selected" : ""}>${esc(t("kitchen.cancelled"))}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="row-actions">
+                        <button class="btn btn-dark btn-sm" data-admin-order-action="view" data-order-id="${esc(order.id)}">${esc(t("admin.view"))}</button>
+                        <button class="btn btn-gold btn-sm" data-admin-order-action="print" data-order-id="${esc(order.id)}">${esc(t("kitchen.print"))}</button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join("") : `<tr><td colspan="7" class="center text-muted">${esc(t("admin.no_data"))}</td></tr>`}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      $("#adminOrderSearch").addEventListener("input", (event) => {
+        state.adminOrderFilters.q = event.target.value;
+        renderAdminOrders();
+        $("#adminOrderSearch").focus();
+      });
+
+      $("#adminOrderStatus").addEventListener("change", (event) => {
+        state.adminOrderFilters.status = event.target.value;
+        renderAdminOrders();
+      });
+
+      $("#adminOrderRange").addEventListener("change", (event) => {
+        state.adminOrderFilters.range = event.target.value;
+        renderAdminOrders();
+      });
+    }
+
+    function openOrderModal(orderId) {
+      const order = db.orders.find((o) => o.id === orderId);
+      if (!order) return;
+
+      const items = order.items
+        .map((item) => {
+          const name = item.name[state.lang] || item.name.sq;
+          return `<div class="summary-row"><span>${item.qty}× ${esc(name)}</span><strong>${formatMoney(item.unitPrice * item.qty)}</strong></div>`;
+        })
+        .join("");
+
+      openModal(`
+        <div class="modal-header">
+          <div>
+            <h3>${esc(order.number)}</h3>
+            <div class="modal-sub">${esc(formatDate(order.createdAt))}</div>
+          </div>
+          <button class="icon-btn" data-close>✕</button>
+        </div>
+
+        <div class="panel-box">
+          <div class="summary-row"><span>${esc(t("admin.customer_name"))}</span><strong>${esc(order.customer)}</strong></div>
+          <div class="summary-row"><span>${esc(t("checkout.phone"))}</span><strong>${esc(order.phone)}</strong></div>
+          <div class="summary-row"><span>${esc(t("checkout.type"))}</span><strong>${esc(orderTypeLabel(order.type))}</strong></div>
+          ${order.table ? `<div class="summary-row"><span>${esc(t("checkout.table"))}</span><strong>${esc(order.table)}</strong></div>` : ""}
+          ${order.note ? `<div class="summary-row"><span>${esc(t("checkout.notes"))}</span><strong>${esc(order.note)}</strong></div>` : ""}
+        </div>
+
+        <div class="panel-box">
+          <div class="panel-title">${esc(t("admin.items"))}</div>
+          ${items}
+          <div class="summary-row"><strong>${esc(t("cart.total"))}</strong><strong>${formatMoney(order.total)}</strong></div>
+        </div>
+
+        <div class="right">
+          <button class="btn btn-dark" data-close>${esc(t("common.close"))}</button>
+          <button class="btn btn-gold" data-receipt-open="${esc(order.id)}">${esc(t("kitchen.print"))}</button>
+        </div>
+      `);
+    }
+
+    function exportOrdersCSV() {
+      const rows = [
+        ["Number", "Date", "Status", "Type", "Customer", "Phone", "Table", "Total", "Items"]
+      ];
+
+      db.orders.forEach((order) => {
+        rows.push([
+          order.number,
+          order.createdAt,
+          order.status,
+          order.type,
+          order.customer,
+          order.phone,
+          order.table || "",
+          order.total.toFixed(2),
+          order.items.map((item) => `${item.qty}x ${item.name.en || item.name.sq}`).join("; ")
+        ]);
+      });
+
+      const csv = rows
+        .map((row) => row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(","))
+        .join("\n");
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `sharri-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderAdminProducts() {
+      const rows = db.products
+        .slice()
+        .sort((a, b) => getCategory(a.category).sort - getCategory(b.category).sort || a.name.sq.localeCompare(b.name.sq))
+        .map((product) => `
+          <tr>
+            <td><img class="thumb" src="${esc(product.image)}" alt="${esc(product.name.en)}" loading="lazy" /></td>
+            <td>
+              <strong>${esc(product.name[state.lang] || product.name.sq)}</strong><br>
+              <span class="text-muted">${esc(product.name.en)}</span>
+            </td>
+            <td>${esc(categoryName(product.category))}</td>
+            <td>${productPriceHTML(product)}</td>
+            <td>
+              ${product.popular ? `<span class="badge-pill">${esc(t("admin.popular"))}</span> ` : ""}
+              ${product.daily ? `<span class="badge-pill dark">${esc(t("admin.daily"))}</span> ` : ""}
+              ${product.hidden ? `<span class="badge-pill dark">${esc(t("admin.hidden"))}</span>` : ""}
+            </td>
+            <td>
+              <div class="row-actions">
+                <button class="btn btn-dark btn-sm" data-admin-product-action="edit" data-product-id="${esc(product.id)}">${esc(t("admin.edit"))}</button>
+                <button class="btn btn-ghost btn-sm" data-admin-product-action="toggle-hidden" data-product-id="${esc(product.id)}">
+                  ${product.hidden ? esc(t("admin.show")) : esc(t("admin.hide"))}
+                </button>
+                <button class="btn ${product.available ? "btn-danger" : "btn-gold"} btn-sm" data-admin-product-action="toggle-available" data-product-id="${esc(product.id)}">
+                  ${product.available ? esc(t("admin.unavailable")) : esc(t("admin.available"))}
+                </button>
+                <button class="btn btn-danger btn-sm" data-admin-product-action="delete" data-product-id="${esc(product.id)}">${esc(t("admin.delete"))}</button>
+              </div>
+            </td>
+          </tr>
+        `)
+        .join("");
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.products"))}</h2>
+          <div class="right">
+            <button class="btn btn-gold" data-admin-add-product>${esc(t("admin.add_product"))}</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>${esc(t("admin.image"))}</th>
+                  <th>${esc(t("admin.name_sq"))}</th>
+                  <th>${esc(t("admin.category"))}</th>
+                  <th>${esc(t("admin.price"))}</th>
+                  <th>${esc(t("admin.status"))}</th>
+                  <th>${esc(t("admin.actions"))}</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openProductForm(productId = null) {
+      const product = productId ? getProduct(productId) : null;
+
+      const categoryOptions = db.categories
+        .slice()
+        .sort((a, b) => a.sort - b.sort)
+        .map((category) => `
+          <option value="${esc(category.id)}" ${product?.category === category.id ? "selected" : ""}>
+            ${esc(category.name[state.lang] || category.name.sq)}
+          </option>
+        `)
+        .join("");
+
+      openModal(`
+        <div class="modal-header">
+          <h3>${product ? esc(t("admin.edit")) : esc(t("admin.add_product"))}</h3>
+          <button class="icon-btn" data-close>✕</button>
+        </div>
+
+        <form id="productForm" class="form-grid two-col" novalidate>
+          <input type="hidden" name="id" value="${esc(product?.id || "")}" />
+
+          <div class="field">
+            <label>${esc(t("admin.name_sq"))}</label>
+            <input name="name_sq" class="input" required value="${esc(product?.name.sq || "")}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.name_en"))}</label>
+            <input name="name_en" class="input" required value="${esc(product?.name.en || "")}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.desc_sq"))}</label>
+            <textarea name="desc_sq" class="textarea" required>${esc(product?.desc.sq || "")}</textarea>
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.desc_en"))}</label>
+            <textarea name="desc_en" class="textarea" required>${esc(product?.desc.en || "")}</textarea>
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.price"))}</label>
+            <input name="price" type="number" step="0.01" min="0" class="input" required value="${product?.price ?? ""}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.category"))}</label>
+            <select name="category" class="select-field" required>${categoryOptions}</select>
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.image"))}</label>
+            <input id="productImage" name="image" class="input" value="${esc(product?.image || IMG.grill)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.image_file"))}</label>
+            <input id="productImageFile" type="file" accept="image/*" class="input" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.unit"))}</label>
+            <input name="unit" class="input" value="${esc(product?.unit || "")}" placeholder="piece" />
+          </div>
+
+          <div class="panel-box" style="grid-column: 1 / -1;">
+            <div class="check-grid">
+              <label class="checkline"><input type="checkbox" name="popular" ${product?.popular ? "checked" : ""} /><span>${esc(t("admin.popular"))}</span></label>
+              <label class="checkline"><input type="checkbox" name="daily" ${product?.daily ? "checked" : ""} /><span>${esc(t("admin.daily"))}</span></label>
+              <label class="checkline"><input type="checkbox" name="hidden" ${product?.hidden ? "checked" : ""} /><span>${esc(t("admin.hidden"))}</span></label>
+              <label class="checkline"><input type="checkbox" name="available" ${product ? (product.available ? "checked" : "") : "checked"} /><span>${esc(t("admin.available"))}</span></label>
+            </div>
+          </div>
+
+          <div class="right" style="grid-column: 1 / -1;">
+            <button type="button" class="btn btn-dark" data-close>${esc(t("admin.cancel"))}</button>
+            <button type="submit" class="btn btn-gold">${esc(t("admin.save"))}</button>
+          </div>
+        </form>
+      `);
+    }
+
+    async function processImageFile(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const scale = Math.min(1, 1000 / img.width);
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          resolve(canvas.toDataURL("image/jpeg", 0.82));
+        };
+
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    function handleProductSubmit(form) {
+      const formData = new FormData(form);
+      const id = String(formData.get("id") || "");
+      const nameSq = String(formData.get("name_sq") || "").trim();
+      const nameEn = String(formData.get("name_en") || "").trim();
+      const price = Number(formData.get("price"));
+
+      if (!nameSq || !nameEn || Number.isNaN(price) || price < 0) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      const payload = {
+        category: String(formData.get("category")),
+        price,
+        image: String(formData.get("image") || IMG.grill),
+        name: { sq: nameSq, en: nameEn },
+        desc: {
+          sq: String(formData.get("desc_sq") || "").trim(),
+          en: String(formData.get("desc_en") || "").trim()
+        },
+        popular: Boolean(formData.get("popular")),
+        daily: Boolean(formData.get("daily")),
+        hidden: Boolean(formData.get("hidden")),
+        available: Boolean(formData.get("available")),
+        unit: String(formData.get("unit") || "").trim() || null
+      };
+
+      if (id) {
+        const product = getProduct(id);
+        Object.assign(product, payload);
+        logActivity(`Product updated: ${nameSq}`);
+      } else {
+        let newId = slugify(nameEn);
+        while (getProduct(newId)) newId += `-${Math.floor(Math.random() * 99)}`;
+
+        db.products.push({
+          id: newId,
+          created: Date.now(),
+          ...payload
+        });
+
+        logActivity(`Product created: ${nameSq}`);
+      }
+
+      saveDB();
+      renderAdminProducts();
+      renderMenu();
+      closeModal($(".modal-overlay"));
+      toast(t("notify.saved"), "success");
+    }
+
+    function deleteProduct(productId) {
+      if (!confirm(t("common.confirm_delete"))) return;
+
+      const product = getProduct(productId);
+      db.products = db.products.filter((p) => p.id !== productId);
+      saveDB();
+      logActivity(`Product deleted: ${product?.name?.sq || productId}`);
+      renderAdminProducts();
+      renderMenu();
+      toast(t("notify.deleted"), "info");
+    }
+
+    function renderAdminCategories() {
+      const rows = db.categories
+        .slice()
+        .sort((a, b) => a.sort - b.sort)
+        .map((category) => `
+          <tr>
+            <td>${esc(category.name.sq)}</td>
+            <td>${esc(category.name.en)}</td>
+            <td>${category.sort}</td>
+            <td>${db.products.filter((p) => p.category === category.id).length}</td>
+            <td>
+              <div class="row-actions">
+                <button class="btn btn-dark btn-sm" data-admin-category-action="edit" data-category-id="${esc(category.id)}">${esc(t("admin.edit"))}</button>
+                <button class="btn btn-danger btn-sm" data-admin-category-action="delete" data-category-id="${esc(category.id)}">${esc(t("admin.delete"))}</button>
+              </div>
+            </td>
+          </tr>
+        `)
+        .join("");
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.categories"))}</h2>
+          <div class="right">
+            <button class="btn btn-gold" data-admin-add-category>${esc(t("admin.add_category"))}</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>${esc(t("admin.name_sq"))}</th>
+                  <th>${esc(t("admin.name_en"))}</th>
+                  <th>${esc(t("admin.sort"))}</th>
+                  <th>${esc(t("admin.products"))}</th>
+                  <th>${esc(t("admin.actions"))}</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openCategoryForm(categoryId = null) {
+      const category = categoryId ? getCategory(categoryId) : null;
+
+      openModal(`
+        <div class="modal-header">
+          <h3>${category ? esc(t("admin.edit")) : esc(t("admin.add_category"))}</h3>
+          <button class="icon-btn" data-close>✕</button>
+        </div>
+
+        <form id="categoryForm" class="form-grid" novalidate>
+          <input type="hidden" name="id" value="${esc(category?.id || "")}" />
+
+          <div class="field">
+            <label>${esc(t("admin.name_sq"))}</label>
+            <input name="name_sq" class="input" required value="${esc(category?.name.sq || "")}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.name_en"))}</label>
+            <input name="name_en" class="input" required value="${esc(category?.name.en || "")}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.sort"))}</label>
+            <input name="sort" type="number" min="1" class="input" required value="${category?.sort ?? db.categories.length + 1}" />
+          </div>
+
+          <div class="right">
+            <button type="button" class="btn btn-dark" data-close>${esc(t("admin.cancel"))}</button>
+            <button type="submit" class="btn btn-gold">${esc(t("admin.save"))}</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function handleCategorySubmit(form) {
+      const formData = new FormData(form);
+      const id = String(formData.get("id") || "");
+      const nameSq = String(formData.get("name_sq") || "").trim();
+      const nameEn = String(formData.get("name_en") || "").trim();
+      const sort = Number(formData.get("sort")) || 1;
+
+      if (!nameSq || !nameEn) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      if (id) {
+        const category = db.categories.find((c) => c.id === id);
+        category.name = { sq: nameSq, en: nameEn };
+        category.sort = sort;
+        logActivity(`Category updated: ${nameSq}`);
+      } else {
+        db.categories.push({
+          id: slugify(nameEn),
+          name: { sq: nameSq, en: nameEn },
+          sort
+        });
+        logActivity(`Category created: ${nameSq}`);
+      }
+
+      saveDB();
+      renderAdminCategories();
+      renderCategoryChips();
+      renderMenu();
+      closeModal($(".modal-overlay"));
+      toast(t("notify.saved"), "success");
+    }
+
+    function deleteCategory(categoryId) {
+      const hasProducts = db.products.some((p) => p.category === categoryId);
+      if (hasProducts) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      if (!confirm(t("common.confirm_delete"))) return;
+
+      db.categories = db.categories.filter((c) => c.id !== categoryId);
+      saveDB();
+      logActivity(`Category deleted: ${categoryId}`);
+      renderAdminCategories();
+      renderCategoryChips();
+      toast(t("notify.deleted"), "info");
+    }
+
+    function renderAdminSettings() {
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.settings"))}</h2>
+        </div>
+
+        <form id="settingsForm" class="panel form-grid two-col" novalidate>
+          <div class="field">
+            <label>${esc(t("admin.settings_restaurant"))}</label>
+            <input name="restaurantName" class="input" required value="${esc(db.settings.restaurantName)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.settings_phone"))}</label>
+            <input name="phone" class="input" required value="${esc(db.settings.phone)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.settings_address"))}</label>
+            <input name="address" class="input" required value="${esc(db.settings.address)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.settings_hours"))}</label>
+            <input name="hours" class="input" required value="${esc(db.settings.hours)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.settings_currency"))}</label>
+            <input name="currency" class="input" required value="${esc(db.settings.currency)}" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.settings_tax"))}</label>
+            <input name="taxRate" type="number" min="0" max="100" step="0.1" class="input" required value="${esc(db.settings.taxRate)}" />
+          </div>
+
+          <label class="checkline" style="grid-column: 1 / -1;">
+            <input type="checkbox" name="taxIncluded" ${db.settings.taxIncluded ? "checked" : ""} />
+            <span>${esc(t("admin.settings_tax_included"))}</span>
+          </label>
+
+          <div class="right" style="grid-column: 1 / -1;">
+            <button type="submit" class="btn btn-gold">${esc(t("admin.save"))}</button>
+          </div>
+        </form>
+      `;
+    }
+
+    function handleSettingsSubmit(form) {
+      const formData = new FormData(form);
+
+      db.settings = {
+        ...db.settings,
+        restaurantName: String(formData.get("restaurantName") || "").trim(),
+        phone: String(formData.get("phone") || "").trim(),
+        address: String(formData.get("address") || "").trim(),
+        hours: String(formData.get("hours") || "").trim(),
+        currency: String(formData.get("currency") || "€").trim(),
+        taxRate: Number(formData.get("taxRate")) || 0,
+        taxIncluded: Boolean(formData.get("taxIncluded"))
+      };
+
+      saveDB();
+      logActivity("Settings updated");
+      renderSettings();
+      renderCart();
+      toast(t("notify.saved"), "success");
+    }
+
+    function renderAdminUsers() {
+      const rows = db.users
+        .map((user) => `
+          <tr>
+            <td><strong>${esc(user.username)}</strong></td>
+            <td>${esc(user.role)}</td>
+            <td>${esc(formatDate(user.createdAt))}</td>
+            <td>
+              ${user.username !== state.user.username
+                ? `<button class="btn btn-danger btn-sm" data-admin-user-delete="${esc(user.id)}">${esc(t("admin.delete"))}</button>`
+                : ""
+              }
+            </td>
+          </tr>
+        `)
+        .join("");
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.users"))}</h2>
+          <div class="right">
+            <button class="btn btn-gold" data-admin-add-user>${esc(t("admin.add_user"))}</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>${esc(t("admin.username"))}</th>
+                  <th>${esc(t("admin.role"))}</th>
+                  <th>${esc(t("admin.date"))}</th>
+                  <th>${esc(t("admin.actions"))}</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openUserForm() {
+      openModal(`
+        <div class="modal-header">
+          <h3>${esc(t("admin.add_user"))}</h3>
+          <button class="icon-btn" data-close>✕</button>
+        </div>
+
+        <form id="userForm" class="form-grid" novalidate>
+          <div class="field">
+            <label>${esc(t("admin.username"))}</label>
+            <input name="username" class="input" required autocomplete="off" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.password"))}</label>
+            <input name="password" type="password" class="input" required autocomplete="new-password" />
+          </div>
+
+          <div class="field">
+            <label>${esc(t("admin.role"))}</label>
+            <select name="role" class="select-field">
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+              <option value="kitchen">Kitchen</option>
+            </select>
+          </div>
+
+          <div class="right">
+            <button type="button" class="btn btn-dark" data-close>${esc(t("admin.cancel"))}</button>
+            <button type="submit" class="btn btn-gold">${esc(t("admin.save"))}</button>
+          </div>
+        </form>
+      `);
+    }
+
+    async function handleUserSubmit(form) {
+      const formData = new FormData(form);
+      const username = String(formData.get("username") || "").trim().toLowerCase();
+      const password = String(formData.get("password") || "");
+      const role = String(formData.get("role") || "staff");
+
+      if (username.length < 3 || password.length < 6) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      if (db.users.some((user) => user.username.toLowerCase() === username)) {
+        toast(t("notify.error"), "error");
+        return;
+      }
+
+      db.users.push({
+        id: uuid(),
+        username,
+        passwordHash: await hashPassword(password),
+        role,
+        createdAt: new Date().toISOString()
+      });
+
+      saveDB();
+      logActivity(`User created: ${username}`);
+      renderAdminUsers();
+      closeModal($(".modal-overlay"));
+      toast(t("notify.saved"), "success");
+    }
+
+    function deleteUser(userId) {
+      if (!confirm(t("common.confirm_delete"))) return;
+
+      const user = db.users.find((u) => u.id === userId);
+      db.users = db.users.filter((u) => u.id !== userId);
+      saveDB();
+      logActivity(`User deleted: ${user?.username || userId}`);
+      renderAdminUsers();
+      toast(t("notify.deleted"), "info");
+    }
+
+    function renderAdminLogs() {
+      const rows = db.logs.length
+        ? db.logs.map((log) => `
+          <tr>
+            <td>${esc(formatDate(log.at))}</td>
+            <td>${esc(log.user)}</td>
+            <td>${esc(log.action)}</td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="3" class="center text-muted">${esc(t("admin.no_data"))}</td></tr>`;
+
+      $("#adminContent").innerHTML = `
+        <div class="admin-topbar">
+          <h2>${esc(t("admin.logs"))}</h2>
+        </div>
+
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>${esc(t("admin.date"))}</th>
+                  <th>${esc(t("admin.username"))}</th>
+                  <th>${esc(t("admin.actions"))}</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    /* Router */
+    function router() {
+      const hash = location.hash || "#/";
+      const siteView = $("#siteView");
+      const routeView = $("#routeView");
+
+      if (hash.startsWith("#/kitchen")) {
+        document.body.classList.add("kds-mode");
+        siteView.classList.add("hidden");
+        routeView.classList.remove("hidden");
+        state.knownOrders = new Set(db.orders.map((order) => order.id));
+        renderKitchen(false);
+      } else if (hash.startsWith("#/admin")) {
+        document.body.classList.remove("kds-mode");
+        siteView.classList.add("hidden");
+        routeView.classList.remove("hidden");
+        renderAdmin();
+      } else {
+        document.body.classList.remove("kds-mode");
+        siteView.classList.remove("hidden");
+        routeView.classList.add("hidden");
+        observeReveals();
+      }
+    }
+
+    /* Events */
+    function bindEvents() {
+      window.addEventListener("hashchange", router);
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === DB_KEY && event.newValue) {
+          db = JSON.parse(event.newValue);
+          renderSettings();
+          renderMenu();
+
+          if (location.hash.startsWith("#/kitchen")) renderKitchen(true);
+          if (location.hash.startsWith("#/admin")) renderAdminSection();
+        }
+
+        if (event.key === CART_KEY) {
+          state.cart = JSON.parse(event.newValue || "[]");
+          renderCart();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+
+        const overlay = $$(".modal-overlay").pop();
+        if (overlay) {
+          closeModal(overlay);
+          return;
+        }
+
+        closeCart();
+      });
+
+      document.addEventListener("click", async (event) => {
+        const target = event.target;
+
+        if (target.classList.contains("modal-overlay")) {
+          closeModal(target);
+          return;
+        }
+
+        const closeButton = target.closest("[data-close]");
+        if (closeButton) {
+          closeModal(closeButton.closest(".modal-overlay"));
+          return;
+        }
+
+        const langButton = target.closest("[data-lang]");
+        if (langButton) {
+          setLanguage(langButton.dataset.lang);
+          $("#languageModal").classList.add("hidden");
+          document.body.classList.remove("no-scroll");
+
+          if ((location.hash === "" || location.hash.startsWith("#/")) && !state.orderType) {
+            showOrderTypeModal(false);
+          }
+          return;
+        }
+
+        const orderTypeButton = target.closest("[data-order-type]");
+        if (orderTypeButton) {
+          setOrderType(orderTypeButton.dataset.orderType, state.resumeCheckout);
+          state.resumeCheckout = false;
+          return;
+        }
+
+        if (target.closest("#langToggle")) {
+          $("#languageModal").classList.remove("hidden");
+          document.body.classList.add("no-scroll");
+          return;
+        }
+
+        if (target.closest("#orderTypeToggle")) {
+          showOrderTypeModal(false);
+          return;
+        }
+
+        if (target.closest("#cartToggle")) {
+          openCart();
+          return;
+        }
+
+        if (target.closest("#cartClose") || target.id === "backdrop") {
+          closeCart();
+          return;
+        }
+
+        if (target.closest("[data-close-cart-and-scroll]")) {
+          closeCart();
+          location.hash = "#menu";
+          return;
+        }
+
+        const favoriteButton = target.closest("[data-favorite]");
+        if (favoriteButton) {
+          toggleFavorite(favoriteButton.dataset.favorite);
+          return;
+        }
+
+        const addButton = target.closest("[data-add]");
+        if (addButton) {
+          const product = getProduct(addButton.dataset.add);
+          if (!product || !product.available) return;
+
+          if (product.category === "pizza") openPizzaBuilder(product);
+          else addToCart(product);
+
+          return;
+        }
+
+        const chip = target.closest("[data-chip]");
+        if (chip) {
+          handleChip(chip.dataset.chip);
+          return;
+        }
+
+        const cartAction = target.closest("[data-cart-action]");
+        if (cartAction) {
+          const key = cartAction.dataset.key;
+          if (cartAction.dataset.cartAction === "inc") changeCartQty(key, 1);
+          if (cartAction.dataset.cartAction === "dec") changeCartQty(key, -1);
+          if (cartAction.dataset.cartAction === "remove") removeCartLine(key);
+          return;
+        }
+
+        if (target.closest("#checkoutBtn")) {
+          openCheckout();
+          return;
+        }
+
+        const kitchenAction = target.closest("[data-kitchen-action]");
+        if (kitchenAction) {
+          const orderId = kitchenAction.dataset.orderId;
+          if (kitchenAction.dataset.kitchenAction === "print") openReceipt(orderId);
+          if (kitchenAction.dataset.kitchenAction === "status") updateOrderStatus(orderId, kitchenAction.dataset.status);
+          return;
+        }
+
+        const adminSection = target.closest("[data-admin-section]");
+        if (adminSection) {
+          state.adminSection = adminSection.dataset.adminSection;
+          renderAdminShell();
+          return;
+        }
+
+        if (target.closest("[data-admin-logout]")) {
+          state.user = null;
+          sessionStorage.removeItem("sharri_user");
+          logActivity("Admin logout");
+          renderAdmin();
+          return;
+        }
+
+        if (target.closest("[data-admin-add-product]")) {
+          openProductForm();
+          return;
+        }
+
+        const productAction = target.closest("[data-admin-product-action]");
+        if (productAction) {
+          const productId = productAction.dataset.productId;
+          const action = productAction.dataset.adminProductAction;
+          const product = getProduct(productId);
+
+          if (action === "edit") openProductForm(productId);
+          if (action === "delete") deleteProduct(productId);
+
+          if (action === "toggle-hidden") {
+            product.hidden = !product.hidden;
+            saveDB();
+            renderAdminProducts();
+            renderMenu();
+          }
+
+          if (action === "toggle-available") {
+            product.available = !product.available;
+            saveDB();
+            renderAdminProducts();
+            renderMenu();
+          }
+
+          return;
+        }
+
+        if (target.closest("[data-admin-add-category]")) {
+          openCategoryForm();
+          return;
+        }
+
+        const categoryAction = target.closest("[data-admin-category-action]");
+        if (categoryAction) {
+          const categoryId = categoryAction.dataset.categoryId;
+          if (categoryAction.dataset.adminCategoryAction === "edit") openCategoryForm(categoryId);
+          if (categoryAction.dataset.adminCategoryAction === "delete") deleteCategory(categoryId);
+          return;
+        }
+
+        if (target.closest("[data-admin-add-user]")) {
+          openUserForm();
+          return;
+        }
+
+        const userDelete = target.closest("[data-admin-user-delete]");
+        if (userDelete) {
+          deleteUser(userDelete.dataset.adminUserDelete);
+          return;
+        }
+
+        if (target.closest("[data-admin-export]")) {
+          exportOrdersCSV();
+          return;
+        }
+
+        const adminOrderAction = target.closest("[data-admin-order-action]");
+        if (adminOrderAction) {
+          const orderId = adminOrderAction.dataset.orderId;
+          if (adminOrderAction.dataset.adminOrderAction === "view") openOrderModal(orderId);
+          if (adminOrderAction.dataset.adminOrderAction === "print") openReceipt(orderId);
+          return;
+        }
+
+        if (target.closest("[data-receipt-open]")) {
+          closeModal(target.closest(".modal-overlay"));
+          openReceipt(target.closest("[data-receipt-open]").dataset.receiptOpen);
+          return;
+        }
+
+        if (target.closest("[data-receipt-print]")) {
+          window.print();
+          return;
+        }
+      });
+
+      document.addEventListener("submit", async (event) => {
+        const form = event.target;
+
+        if (form.id === "checkoutForm") {
+          event.preventDefault();
+          handleCheckoutSubmit(form);
+        }
+
+        if (form.id === "pizzaForm") {
+          event.preventDefault();
+          handlePizzaSubmit(form);
+        }
+
+        if (form.id === "adminLoginForm") {
+          event.preventDefault();
+          await handleAdminLogin(form);
+        }
+
+        if (form.id === "productForm") {
+          event.preventDefault();
+          handleProductSubmit(form);
+        }
+
+        if (form.id === "categoryForm") {
+          event.preventDefault();
+          handleCategorySubmit(form);
+        }
+
+        if (form.id === "userForm") {
+          event.preventDefault();
+          await handleUserSubmit(form);
+        }
+
+        if (form.id === "settingsForm") {
+          event.preventDefault();
+          handleSettingsSubmit(form);
+        }
+      });
+
+      document.addEventListener("input", (event) => {
+        if (event.target.id === "searchInput") {
+          state.filters.q = event.target.value;
+          renderMenu();
+        }
+
+        if (event.target.classList.contains("cart-note")) {
+          updateCartNote(event.target.dataset.key, event.target.value);
+        }
+
+        if (event.target.name === "size") {
+          updatePizzaPrice();
+        }
+      });
+
+      document.addEventListener("change", (event) => {
+        if (event.target.id === "sortSelect") {
+          state.filters.sort = event.target.value;
+          renderMenu();
+        }
+
+        if (event.target.classList.contains("order-status-select")) {
+          updateOrderStatus(event.target.dataset.orderId, event.target.value);
+        }
+
+        if (event.target.id === "kdsSoundToggle") {
+          state.kdsSound = event.target.checked;
+        }
+
+        if (event.target.id === "productImageFile") {
+          const file = event.target.files?.[0];
+          if (!file) return;
+
+          processImageFile(file)
+            .then((dataUrl) => {
+              const imageInput = $("#productImage");
+              if (imageInput) imageInput.value = dataUrl;
+              toast(t("notify.image_processed"), "success");
+            })
+            .catch(() => toast(t("notify.error"), "error"));
+        }
+      });
+
+      document.addEventListener("sharri:db-updated", () => {
+        if (location.hash.startsWith("#/kitchen")) renderKitchen(true);
+      });
+    }
+
+    /* Init */
+    async function init() {
+      db = loadDB();
+      await ensureAdminUser();
+
+      state.lang = localStorage.getItem(LANG_KEY) || db.settings.defaultLanguage || "sq";
+      state.orderType = localStorage.getItem(ORDER_TYPE_KEY) || null;
+      state.cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+      state.favorites = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+      state.knownOrders = new Set(db.orders.map((order) => order.id));
+
+      const savedUser = sessionStorage.getItem("sharri_user");
+      if (savedUser) state.user = JSON.parse(savedUser);
+
+      bindEvents();
+      setLanguage(state.lang, false);
+      router();
+
+      $("#loader").classList.add("hidden");
+
+      if (!localStorage.getItem(LANG_KEY)) {
+        $("#languageModal").classList.remove("hidden");
+        document.body.classList.add("no-scroll");
+      } else if ((location.hash === "" || location.hash.startsWith("#/")) && !state.orderType) {
+        showOrderTypeModal(false);
+      }
+
+      setInterval(() => {
+        if (location.hash.startsWith("#/kitchen")) renderKitchen(true);
+      }, 8000);
+    }
+
+    init();
+  </script>
+</body>
+</html>
