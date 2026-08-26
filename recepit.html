@@ -73,15 +73,15 @@
     try { return decodeURIComponent(raw); } catch { return raw; }
   }
 
+  function $(s) { return document.querySelector(s); }
+
   const raw = decodeSafe(location.hash.slice(1)).trim();
 
   if (!raw) {
-    $("#empty")?.classList.remove("hidden") || document.getElementById("empty").classList.remove("hidden");
+    $("#empty").classList.remove("hidden");
   } else {
     render(raw);
   }
-
-  function $(s){ return document.querySelector(s); }
 
   function render(raw) {
     const f = raw.split("|");
@@ -92,7 +92,7 @@
     const date = (f[4] || "").replace(" ", " • ");
 
     const [typeRaw, table] = typeTable.split(":");
-    const type = typeRaw === "Merr" ? "Merr me vete" : "Haj këtu";
+    const type = typeRaw === "Haj" ? "Haj këtu" : "Merr me vete";
 
     const items = itemsStr.split(";").map(p => {
       const m = p.match(/^(\d+)x(.*)E([\d.]+)$/);
