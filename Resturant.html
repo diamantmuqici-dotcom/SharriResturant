@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restorant Sharri - Raporti i Arkës</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2b6cb0;
+      --accent: #e53e3e;
+      --success: #38a169;
+      --bg: #f7fafc;
+      --card-bg: #ffffff;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 20px;
+    }
+
+    .container { max-width: 980px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 14px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    header p { color: var(--text-light); font-size: .95rem; }
+
+    .muted { color: var(--text-light); font-size: .92rem; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      background: var(--primary-light);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    label {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    input, textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid rgba(43, 108, 176, .18);
+      border-color: var(--primary-light);
+    }
+
+    .auto-field {
+      background: #f8fafc;
+      font-weight: 800;
+      color: var(--text);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .auto-field:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: var(--border);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: .82rem;
+      text-transform: uppercase;
+      color: var(--text-light);
+      background: #f8fafc;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .col-value { width: 34%; font-weight: 800; font-size: 1.05rem; }
+    .col-count { width: 33%; }
+    .col-total {
+      width: 33%;
+      text-align: right;
+      font-weight: 900;
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .count-input { width: 100%; text-align: center; font-weight: 800; }
+
+    .withdrawal-row {
+      display: grid;
+      grid-template-columns: 1.4fr .8fr 1.4fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .summary-label { color: var(--text-light); font-weight: 700; }
+
+    .summary-value {
+      font-weight: 900;
+      font-size: 1.1rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .summary-total {
+      background: #eff6ff;
+      border: 2px solid var(--primary-light);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .summary-total .summary-label,
+    .summary-total .summary-value {
+      color: var(--primary);
+      font-size: 1.15rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--accent); color: #fff; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
+
+    .empty-text { color: var(--text-light); padding: 10px 0; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      width: min(760px, 100%);
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      max-height: 80vh;
+      overflow: auto;
+    }
+
+    .modal h2 { margin-bottom: 16px; }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .history-meta small { color: var(--text-light); }
+
+    .discrepancy-positive { color: var(--success); }
+    .discrepancy-negative { color: var(--accent); }
+
+    #status {
+      margin-top: 10px;
+      font-weight: 700;
+      color: var(--success);
+      min-height: 20px;
+    }
+
+    @media (max-width: 760px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .withdrawal-row { grid-template-columns: 1fr 1fr auto; }
+    }
+
+    @page { margin: 12mm; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .card { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; }
+      .no-print { display: none !important; }
+      input, textarea { border: none; padding: 0; background: transparent; resize: none; }
+      .auto-field { border: none; padding: 0; background: transparent; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .col-total, .summary-value { color: #000; }
+      header { border-bottom: 3px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Restorant Sharri</h1>
+      <p>Raporti i Arkës — Hekurat + Letërnjoftimet + Tërheqjet</p>
+      <div id="savedAt" class="muted"></div>
+    </header>
+
+    <section class="card">
+      <h2>Të dhënat e raportit</h2>
+
+      <div class="meta-grid">
+        <div class="form-group">
+          <label for="reportDate">Data (automatike, e kyçur)</label>
+          <input id="reportDate" class="auto-field" type="text" readonly tabindex="-1" aria-readonly="true" />
+        </div>
+
+        <div class="form-group">
+          <label for="reportTime">Ora (automatike, e kyçur)</label>
+          <input id="reportTime" class="auto-field" type="text" readonly tabindex="-1" aria-readonly="true" />
+        </div>
+
+        <div class="form-group">
+          <label for="cashier">Kasieri</label>
+          <input id="cashier" placeholder="Emri i kasierit" />
+        </div>
+
+        <div class="form-group">
+          <label for="expectedTotal">Totali i pritshëm</label>
+          <input id="expectedTotal" type="number" min="0" step="0.01" placeholder="p.sh. 523" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Shënime</label>
+        <textarea id="notes" rows="2" placeholder="Shënime shtesë..."></textarea>
+      </div>
+
+      <p class="muted no-print" style="margin-top: 10px;">
+        Data dhe ora vendosen vetë nga sistemi, përditësohen kur editon diçka dhe nuk mund të ndryshohen manualisht.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Hekurat / Monedhat</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Vlera</th>
+            <th>Sasia</th>
+            <th>Totali</th>
+          </tr>
+        </thead>
+        <tbody id="coinsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Letërnjoftimet</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Vlera</th>
+            <th>Sasia</th>
+            <th>Totali</th>
+          </tr>
+        </thead>
+        <tbody id="billsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Tërheqjet / Kush ka marrë para</h2>
+
+      <div id="withdrawalRows"></div>
+
+      <div class="withdrawal-row no-print">
+        <div>
+          <input id="newName" list="namesList" placeholder="Emri (p.sh. Zenel, Lorik, Babi)" />
+        </div>
+        <div>
+          <input id="newAmount" type="number" min="0" step="0.01" placeholder="Shuma" />
+        </div>
+        <div>
+          <input id="newReason" placeholder="Arsyeja" />
+        </div>
+        <button id="addWithdrawalBtn" class="btn btn-primary" type="button">Shto</button>
+      </div>
+
+      <datalist id="namesList">
+        <option value="Zenel"></option>
+        <option value="Lorik"></option>
+        <option value="Babi"></option>
+      </datalist>
+    </section>
+
+    <section class="card">
+      <h2>Përmbledhja</h2>
+      <div class="summary-grid">
+        <div>
+          <div class="summary-item">
+            <span class="summary-label">Hekurat (1 € + 2 €)</span>
+            <span id="totalCoins" class="summary-value">0.00 €</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Letra (5 € - 200 €)</span>
+            <span id="totalBills" class="summary-value">0.00 €</span>
+          </div>
+          <div class="summary-item summary-total">
+            <span class="summary-label">Totali në arkë</span>
+            <span id="totalCash" class="summary-value">0.00 €</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="summary-item">
+            <span class="summary-label">Tërheqjet gjithsej</span>
+            <span id="totalWithdrawals" class="summary-value">0.00 €</span>
+          </div>
+          <div class="summary-item summary-total">
+            <span class="summary-label">Totali i raportuar</span>
+            <span id="grandTotal" class="summary-value">0.00 €</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Diferenca nga totali i pritshëm</span>
+            <span id="difference" class="summary-value">0.00 €</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card no-print">
+      <div class="actions">
+        <button id="saveBtn" class="btn btn-success" type="button">Ruaj Raportin</button>
+        <button id="historyBtn" class="btn btn-outline" type="button">Historiku</button>
+        <button id="printBtn" class="btn btn-primary" type="button">Printo</button>
+        <button id="newBtn" class="btn btn-outline" type="button">Raport i Ri</button>
+        <button id="sampleBtn" class="btn btn-outline" type="button">Ngarko Shembull</button>
+      </div>
+      <div id="status" role="status"></div>
+    </section>
+  </div>
+
+  <div id="historyModal" class="modal-overlay no-print">
+    <div class="modal">
+      <h2>Historiku i raporteve</h2>
+      <div id="historyItems"></div>
+      <div class="actions">
+        <button id="closeHistoryBtn" class="btn btn-outline" type="button">Mbyll</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "restorant_sharri_raportet_arkes";
+
+    const DENOMINATIONS = [
+      { value: 1, type: "coin", label: "1 € Hekur" },
+      { value: 2, type: "coin", label: "2 € Hekur" },
+      { value: 5, type: "bill", label: "5 € Letër" },
+      { value: 10, type: "bill", label: "10 € Letër" },
+      { value: 20, type: "bill", label: "20 € Letër" },
+      { value: 50, type: "bill", label: "50 € Letër" },
+      { value: 100, type: "bill", label: "100 € Letër" },
+      { value: 200, type: "bill", label: "200 € Letër" }
+    ];
+
+    let withdrawals = [];
+    let currentId = null;
+    let currentTotals = {};
+    let autoSaveTimer = null;
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function uid() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      return String(Date.now() + Math.random()).replace(/\./g, "");
+    }
+
+    function formatMoney(value) {
+      return new Intl.NumberFormat(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(Number(value) || 0) + " €";
+    }
+
+    function formatDateTime(value) {
+      const date = new Date(value);
+      return date.toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
+
+    function setStatus(message) {
+      $("#status").textContent = message;
+      window.setTimeout(() => {
+        $("#status").textContent = "";
+      }, 3500);
+    }
+
+    function updateAutoDateTime() {
+      const now = new Date();
+
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const year = now.getFullYear();
+
+      $("#reportDate").value = `${month}-${day}-${year}`;
+      $("#reportDate").dataset.iso = now.toISOString();
+
+      $("#reportTime").value = now.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      });
+    }
+
+    function renderDenominations() {
+      const coinsBody = $("#coinsBody");
+      const billsBody = $("#billsBody");
+
+      DENOMINATIONS.forEach((denom) => {
+        const row = `
+          <tr>
+            <td class="col-value">${denom.label}</td>
+            <td class="col-count">
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value="0"
+                class="count-input denom-input"
+                data-value="${denom.value}"
+                data-type="${denom.type}"
+              />
+            </td>
+            <td class="col-total denom-total" id="denom-${denom.value}">0.00 €</td>
+          </tr>
+        `;
+
+        if (denom.type === "coin") {
+          coinsBody.insertAdjacentHTML("beforeend", row);
+        } else {
+          billsBody.insertAdjacentHTML("beforeend", row);
+        }
+      });
+    }
+
+    function renderWithdrawals() {
+      const wrapper = $("#withdrawalRows");
+
+      if (!withdrawals.length) {
+        wrapper.innerHTML = `<p class="empty-text">Nuk ka tërheqje. Shto emrin dhe shumën më poshtë.</p>`;
+        calculate();
+        return;
+      }
+
+      wrapper.innerHTML = withdrawals.map((item) => {
+        return `
+          <div class="withdrawal-row">
+            <div>
+              <input class="w-name" data-id="${item.id}" value="${escapeHtml(item.name)}" placeholder="Emri" />
+            </div>
+            <div>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                class="w-amount"
+                data-id="${item.id}"
+                value="${item.amount}"
+              />
+            </div>
+            <div>
+              <input class="w-reason" data-id="${item.id}" value="${escapeHtml(item.reason)}" placeholder="Arsyeja" />
+            </div>
+            <button class="btn btn-danger no-print" type="button" data-delete="${item.id}">Fshij</button>
+          </div>
+        `;
+      }).join("");
+
+      calculate();
+    }
+
+    function addWithdrawal(name, amount, reason) {
+      withdrawals.push({
+        id: uid(),
+        name: String(name || "").trim(),
+        amount: Number(amount) || 0,
+        reason: String(reason || "").trim()
+      });
+
+      updateAutoDateTime();
+      renderWithdrawals();
+      scheduleAutoSave();
+    }
+
+    function calculate() {
+      let coinTotal = 0;
+      let billTotal = 0;
+
+      $$(".denom-input").forEach((input) => {
+        const count = Number(input.value) || 0;
+        const value = Number(input.dataset.value);
+        const total = count * value;
+
+        const totalCell = document.getElementById(`denom-${value}`);
+        if (totalCell) totalCell.textContent = formatMoney(total);
+
+        if (input.dataset.type === "coin") {
+          coinTotal += total;
+        } else {
+          billTotal += total;
+        }
+      });
+
+      const cashTotal = coinTotal + billTotal;
+      const withdrawalTotal = withdrawals.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+      const grandTotal = cashTotal + withdrawalTotal;
+      const expectedTotal = Number($("#expectedTotal").value) || 0;
+      const difference = grandTotal - expectedTotal;
+
+      $("#totalCoins").textContent = formatMoney(coinTotal);
+      $("#totalBills").textContent = formatMoney(billTotal);
+      $("#totalCash").textContent = formatMoney(cashTotal);
+      $("#totalWithdrawals").textContent = formatMoney(withdrawalTotal);
+      $("#grandTotal").textContent = formatMoney(grandTotal);
+
+      const differenceEl = $("#difference");
+      differenceEl.textContent = difference > 0 ? "+" + formatMoney(difference) : formatMoney(difference);
+      differenceEl.classList.remove("discrepancy-positive", "discrepancy-negative");
+
+      if (difference > 0) differenceEl.classList.add("discrepancy-positive");
+      if (difference < 0) differenceEl.classList.add("discrepancy-negative");
+
+      currentTotals = {
+        coinTotal,
+        billTotal,
+        cashTotal,
+        withdrawalTotal,
+        grandTotal,
+        difference
+      };
+
+      return currentTotals;
+    }
+
+    function getReports() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function persistReports(reports) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+      } catch {
+        setStatus("Gabim në ruajtjen e historikut.");
+      }
+    }
+
+    function collectReport() {
+      calculate();
+
+      const denominations = {};
+      $$(".denom-input").forEach((input) => {
+        denominations[input.dataset.value] = Number(input.value) || 0;
+      });
+
+      return {
+        id: currentId || uid(),
+        date: $("#reportDate").value,
+        time: $("#reportTime").value,
+        cashier: $("#cashier").value.trim(),
+        expected: Number($("#expectedTotal").value) || 0,
+        notes: $("#notes").value.trim(),
+        denominations,
+        withdrawals: withdrawals
+          .filter((item) => item.name || Number(item.amount) > 0)
+          .map((item) => ({
+            name: item.name,
+            amount: Number(item.amount) || 0,
+            reason: item.reason
+          })),
+        savedAt: new Date().toISOString(),
+        totals: currentTotals
+      };
+    }
+
+    function hasMeaningfulData() {
+      const anyDenomination = $$(".denom-input").some((input) => Number(input.value) > 0);
+
+      const anyWithdrawal = withdrawals.some((item) => {
+        return (item.name && item.name.trim() !== "") || Number(item.amount) > 0;
+      });
+
+      const cashier = $("#cashier").value.trim();
+      const notes = $("#notes").value.trim();
+      const expected = Number($("#expectedTotal").value) || 0;
+
+      return anyDenomination || anyWithdrawal || Boolean(cashier) || Boolean(notes) || expected > 0;
+    }
+
+    function scheduleAutoSave() {
+      window.clearTimeout(autoSaveTimer);
+      autoSaveTimer = window.setTimeout(() => {
+        autoSaveReport();
+      }, 400);
+    }
+
+    function autoSaveReport() {
+      updateAutoDateTime();
+
+      if (!hasMeaningfulData()) return;
+
+      const data = collectReport();
+      currentId = data.id;
+
+      const reports = getReports();
+      const existingIndex = reports.findIndex((report) => report.id === data.id);
+
+      if (existingIndex >= 0) {
+        reports[existingIndex] = data;
+      } else {
+        reports.unshift(data);
+      }
+
+      persistReports(reports);
+
+      $("#saveBtn").textContent = "Përditëso Raportin";
+      $("#savedAt").textContent = "Ruajtur automatikisht: " + formatDateTime(data.savedAt);
+      setStatus("U ruajt automatikisht.");
+    }
+
+    function saveReport() {
+      updateAutoDateTime();
+
+      const data = collectReport();
+      currentId = data.id;
+
+      const reports = getReports();
+      const existingIndex = reports.findIndex((report) => report.id === data.id);
+
+      if (existingIndex >= 0) {
+        reports[existingIndex] = data;
+      } else {
+        reports.unshift(data);
+      }
+
+      persistReports(reports);
+
+      $("#saveBtn").textContent = "Përditëso Raportin";
+      $("#savedAt").textContent = "Raportuar më: " + formatDateTime(data.savedAt);
+      setStatus("Raporti u ruajt në historik.");
+    }
+
+    function renderHistory() {
+      const reports = getReports();
+
+      if (!reports.length) {
+        $("#historyItems").innerHTML = `<p class="empty-text">Nuk ka raporte të ruajtura.</p>`;
+        return;
+      }
+
+      const sorted = reports.slice().sort((a, b) => {
+        return new Date(b.savedAt || 0) - new Date(a.savedAt || 0);
+      });
+
+      $("#historyItems").innerHTML = sorted.map((report) => {
+        const savedAt = report.savedAt ? formatDateTime(report.savedAt) : "";
+        const letters = formatMoney(report.totals?.billTotal || 0);
+        const total = formatMoney(report.totals?.grandTotal || 0);
+
+        return `
+          <div class="history-item">
+            <div class="history-meta">
+              <strong>${escapeHtml(report.date || "")} ${escapeHtml(report.time || "")}</strong><br />
+              <small>
+                ${escapeHtml(report.cashier || "Pa kasier")} |
+                Letra: ${letters} |
+                Totali: ${total} |
+                Ruajtur: ${escapeHtml(savedAt)}
+              </small>
+            </div>
+            <div class="actions">
+              <button class="btn btn-outline" type="button" data-load="${report.id}">Ngarko</button>
+              <button class="btn btn-danger" type="button" data-delete-report="${report.id}">Fshij</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function loadReportById(id) {
+      const report = getReports().find((item) => item.id === id);
+      if (!report) return;
+
+      currentId = report.id;
+
+      if (report.date) {
+        $("#reportDate").value = report.date;
+      } else {
+        updateAutoDateTime();
+      }
+
+      if (report.time) {
+        $("#reportTime").value = report.time;
+      } else {
+        updateAutoDateTime();
+      }
+
+      $("#cashier").value = report.cashier || "";
+      $("#expectedTotal").value = report.expected ?? "";
+      $("#notes").value = report.notes || "";
+
+      DENOMINATIONS.forEach((denom) => {
+        const input = document.querySelector(`.denom-input[data-value="${denom.value}"]`);
+        if (input) input.value = report.denominations?.[denom.value] ?? 0;
+      });
+
+      withdrawals = (report.withdrawals || []).map((item) => ({
+        id: uid(),
+        name: item.name || "",
+        amount: Number(item.amount) || 0,
+        reason: item.reason || ""
+      }));
+
+      renderWithdrawals();
+      calculate();
+
+      $("#saveBtn").textContent = "Përditëso Raportin";
+      $("#savedAt").textContent = report.savedAt
+        ? "Raportuar më: " + formatDateTime(report.savedAt)
+        : "";
+
+      $("#historyModal").classList.remove("active");
+      setStatus("Raporti u ngarkua. Nëse editon diçka, data/ora përditësohet automatikisht.");
+    }
+
+    function deleteReport(id) {
+      if (!window.confirm("Fshij këtë raport?")) return;
+
+      if (currentId === id) currentId = null;
+
+      const reports = getReports().filter((report) => report.id !== id);
+      persistReports(reports);
+      renderHistory();
+      setStatus("Raporti u fshi.");
+    }
+
+    function clearForm() {
+      currentId = null;
+      withdrawals = [];
+
+      renderWithdrawals();
+
+      $("#cashier").value = "";
+      $("#expectedTotal").value = "";
+      $("#notes").value = "";
+      $("#savedAt").textContent = "";
+      $("#saveBtn").textContent = "Ruaj Raportin";
+
+      $$(".denom-input").forEach((input) => {
+        input.value = 0;
+      });
+
+      updateAutoDateTime();
+      calculate();
+      setStatus("U krijua raport i ri.");
+    }
+
+    function loadSample() {
+      currentId = null;
+
+      $("#cashier").value = "";
+      $("#expectedTotal").value = "523";
+      $("#notes").value = "200 i ka marr babi; totali pa 200 = 323.";
+
+      const sample = {
+        1: 32,
+        2: 13,
+        5: 7,
+        10: 2,
+        20: 3,
+        50: 1,
+        100: 1,
+        200: 0
+      };
+
+      DENOMINATIONS.forEach((denom) => {
+        const input = document.querySelector(`.denom-input[data-value="${denom.value}"]`);
+        if (input) input.value = sample[denom.value] ?? 0;
+      });
+
+      withdrawals = [
+        {
+          id: uid(),
+          name: "Babi",
+          amount: 200,
+          reason: "Tërheqje nga arka"
+        }
+      ];
+
+      renderWithdrawals();
+      updateAutoDateTime();
+      calculate();
+      autoSaveReport();
+      setStatus("Shembulli u ngarkua dhe Letra del 323 €.");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDenominations();
+      renderWithdrawals();
+      updateAutoDateTime();
+      calculate();
+
+      $("#addWithdrawalBtn").addEventListener("click", () => {
+        const name = $("#newName").value.trim();
+        const amount = Number($("#newAmount").value) || 0;
+        const reason = $("#newReason").value.trim();
+
+        if (!name || amount <= 0) {
+          setStatus("Shkruaj emrin dhe shumën për të shtuar tërheqjen.");
+          return;
+        }
+
+        addWithdrawal(name, amount, reason);
+
+        $("#newName").value = "";
+        $("#newAmount").value = "";
+        $("#newReason").value = "";
+        $("#newName").focus();
+      });
+
+      $("#saveBtn").addEventListener("click", saveReport);
+
+      $("#printBtn").addEventListener("click", () => {
+        updateAutoDateTime();
+        if (hasMeaningfulData()) {
+          saveReport();
+        }
+        window.print();
+      });
+
+      $("#newBtn").addEventListener("click", () => {
+        if (window.confirm("Pastro të gjitha të dhënat për raport të ri?")) {
+          clearForm();
+        }
+      });
+
+      $("#sampleBtn").addEventListener("click", () => {
+        if (window.confirm("Ngarko të dhënat e shembullit?")) {
+          loadSample();
+        }
+      });
+
+      $("#historyBtn").addEventListener("click", () => {
+        renderHistory();
+        $("#historyModal").classList.add("active");
+      });
+
+      $("#closeHistoryBtn").addEventListener("click", () => {
+        $("#historyModal").classList.remove("active");
+      });
+
+      $("#historyModal").addEventListener("click", (event) => {
+        if (event.target === $("#historyModal")) {
+          $("#historyModal").classList.remove("active");
+        }
+      });
+
+      $("#historyItems").addEventListener("click", (event) => {
+        const loadButton = event.target.closest("[data-load]");
+        if (loadButton) {
+          loadReportById(loadButton.dataset.load);
+          return;
+        }
+
+        const deleteButton = event.target.closest("[data-delete-report]");
+        if (deleteButton) {
+          deleteReport(deleteButton.dataset.deleteReport);
+        }
+      });
+
+      $("#withdrawalRows").addEventListener("click", (event) => {
+        const deleteButton = event.target.closest("[data-delete]");
+        if (!deleteButton) return;
+
+        withdrawals = withdrawals.filter((item) => item.id !== deleteButton.dataset.delete);
+        renderWithdrawals();
+        updateAutoDateTime();
+        scheduleAutoSave();
+      });
+
+      document.addEventListener("input", (event) => {
+        updateAutoDateTime();
+
+        if (event.target.matches(".denom-input") || event.target.id === "expectedTotal") {
+          calculate();
+        }
+
+        if (event.target.matches(".w-name, .w-amount, .w-reason")) {
+          const item = withdrawals.find((entry) => entry.id === event.target.dataset.id);
+          if (!item) return;
+
+          if (event.target.classList.contains("w-name")) {
+            item.name = event.target.value;
+          }
+
+          if (event.target.classList.contains("w-reason")) {
+            item.reason = event.target.value;
+          }
+
+          if (event.target.classList.contains("w-amount")) {
+            item.amount = Number(event.target.value) || 0;
+            calculate();
+          }
+        }
+
+        scheduleAutoSave();
+      });
+
+      document.addEventListener("change", () => {
+        updateAutoDateTime();
+        scheduleAutoSave();
+      });
+
+      window.addEventListener("beforeprint", () => {
+        updateAutoDateTime();
+        if (hasMeaningfulData()) {
+          autoSaveReport();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SHARRI | Porosia Juaj</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #f7f0df;
+    background:
+      radial-gradient(circle at top left, rgba(216,174,95,.15), transparent 30%),
+      radial-gradient(circle at top right, rgba(216,174,95,.08), transparent 24%),
+      linear-gradient(180deg, #090a0d 0%, #07080b 100%);
+  }
+  .hidden { display: none !important; }
+  .receipt {
+    width: min(430px, 100%);
+    padding: 28px 24px;
+    border-radius: 24px;
+    background: #fffdf8;
+    color: #151310;
+    display: grid;
+    gap: 16px;
+    font-size: .98rem;
+    box-shadow: 0 24px 80px rgba(0,0,0,.45);
+  }
+  .r-head { text-align: center; display: grid; gap: 7px; }
+  .r-brand { font-family: "Playfair Display", serif; font-size: 2rem; letter-spacing: .22em; }
+  .r-div { height: 1px; background: rgba(21,19,16,.14); }
+  .r-line { display: flex; justify-content: space-between; gap: 14px; line-height: 1.6; }
+  .r-line strong { text-align: right; }
+  .r-items { display: grid; gap: 10px; }
+  .r-thanks { text-align: center; font-weight: 800; }
+  .empty {
+    text-align: center; display: grid; gap: 12px; justify-items: center;
+    padding: 40px; border-radius: 24px;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  }
+  .empty h1 { font-family: "Playfair Display", serif; letter-spacing: .18em; }
+  .empty p { color: rgba(247,240,223,.7); }
+</style>
+</head>
+<body>
+
+<section id="card" class="receipt hidden"></section>
+
+<section id="empty" class="empty hidden">
+  <h1>SHARRI</h1>
+  <p>Nuk u gjet asnjë porosi në këtë link.</p>
+</section>
+
+<script>
+  "use strict";
+
+  const RESTAURANT = {
+    name: "SHARRI",
+    address: "Komoran-Glogovc, Rruga Nazmi Gashi",
+    phone: "048 589 002",
+    taxRate: 18
+  };
+
+  const money = v => "€" + Number(v || 0).toFixed(2);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+  function decodeSafe(raw) {
+    try { return decodeURIComponent(raw); } catch { return raw; }
+  }
+
+  const raw = decodeSafe(location.hash.slice(1)).trim();
+
+  if (!raw) {
+    $("#empty")?.classList.remove("hidden") || document.getElementById("empty").classList.remove("hidden");
+  } else {
+    render(raw);
+  }
+
+  function $(s){ return document.querySelector(s); }
+
+  function render(raw) {
+    const f = raw.split("|");
+    const number = f[0] || "-";
+    const typeTable = f[1] || "";
+    const itemsStr = f[2] || "";
+    const total = parseFloat((f[3] || "E0").replace("E", "")) || 0;
+    const date = (f[4] || "").replace(" ", " • ");
+
+    const [typeRaw, table] = typeTable.split(":");
+    const type = typeRaw === "Merr" ? "Merr me vete" : "Haj këtu";
+
+    const items = itemsStr.split(";").map(p => {
+      const m = p.match(/^(\d+)x(.*)E([\d.]+)$/);
+      if (!m) return null;
+      return { qty: Number(m[1]), name: m[2], line: parseFloat(m[3]) };
+    }).filter(Boolean);
+
+    const vat = total - total / (1 + RESTAURANT.taxRate / 100);
+
+    const itemRows = items.length
+      ? items.map(i => `
+          <div class="r-line">
+            <span>${i.qty} × ${esc(i.name)}</span>
+            <strong>${money(i.line)}</strong>
+          </div>`).join("")
+      : `<div class="r-line"><span>-</span><strong>-</strong></div>`;
+
+    $("#card").innerHTML = `
+      <div class="r-head">
+        <div class="r-brand">${esc(RESTAURANT.name)}</div>
+        <div>${esc(RESTAURANT.address)}</div>
+        <div>${esc(RESTAURANT.phone)}</div>
+      </div>
+
+      <div class="r-div"></div>
+
+      <div class="r-line"><span>Porosia</span><strong>${esc(number)}</strong></div>
+      <div class="r-line"><span>Data</span><strong>${esc(date)}</strong></div>
+      <div class="r-line"><span>Lloji</span><strong>${esc(type)}</strong></div>
+      ${table ? `<div class="r-line"><span>Tavolina</span><strong>${esc(table)}</strong></div>` : ""}
+
+      <div class="r-div"></div>
+      <div class="r-items">${itemRows}</div>
+      <div class="r-div"></div>
+
+      <div class="r-line"><span>Nëntotali</span><strong>${money(total)}</strong></div>
+      <div class="r-line"><span>TVSH</span><strong>${money(vat)}</strong></div>
+      <div class="r-line"><strong>Totali</strong><strong>${money(total)}</strong></div>
+
+      <div class="r-thanks">Faleminderit që zgjodhët ${esc(RESTAURANT.name)}!</div>
+    `;
+
+    $("#card").classList.remove("hidden");
+  }
+</script>
+</body>
+</html>
