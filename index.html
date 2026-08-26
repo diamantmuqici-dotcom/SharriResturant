@@ -4065,6 +4065,55 @@ function openReceipt(orderId){
   `);
 }
 /* ================= END PATCH 3 ================= */
+    /* ================= PATCH 4: show NEW products added in code ================= */
+function mergeListById(baseList, savedList) {
+  const saved = (savedList || []).map(item => ({ ...item }));
+  const ids = new Set(saved.map(x => x.id));
+  for (const base of baseList) {
+    if (!ids.has(base.id)) saved.push(JSON.parse(JSON.stringify(base)));
+  }
+  return saved;
+}
+
+function loadDB() {
+  const base = getDefaultDB();
+  const raw = localStorage.getItem(DB_KEY);
+
+  if (!raw) {
+    localStorage.setItem(DB_KEY, JSON.stringify(base));
+    return base;
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    const merged = {
+      ...base,
+      ...parsed,
+      settings:      { ...base.settings,      ...(parsed.settings      || {}) },
+      counters:      { ...base.counters,      ...(parsed.counters      || {}) },
+      lock:          { ...base.lock,          ...(parsed.lock          || {}) },
+      deviceProfile: { ...base.deviceProfile, ...(parsed.deviceProfile || {}) },
+      categories: mergeListById(base.categories, parsed.categories),
+      products: mergeListById(base.products, parsed.products).map(p => ({
+        image: "", available: true, hidden: false, unit: null,
+        popular: false, daily: false, family: false, special: false,
+        ...p
+      })),
+      orders:      parsed.orders      || [],
+      cashReports: parsed.cashReports || [],
+      users:       parsed.users       || [],
+      logs:        parsed.logs        || []
+    };
+
+    localStorage.setItem(DB_KEY, JSON.stringify(merged));
+    return merged;
+  } catch {
+    localStorage.setItem(DB_KEY, JSON.stringify(base));
+    return base;
+  }
+}
+/* ================= END PATCH 4 ================= */
   </script>
 </body>
 </html>
