@@ -1,0 +1,188 @@
+    .span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .print-area {
+      background: transparent;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      .receipt,
+      .receipt *,
+      .print-area,
+      .print-area * {
+        visibility: visible !important;
+      }
+
+      .receipt {
+        position: fixed;
+        inset: 0 auto auto 0;
+        width: 100%;
+        max-width: 430px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .print-area {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: #fff !important;
+      }
+
+      .print-area,
+      .print-area * {
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+
+      .print-area input,
+      .print-area textarea,
+      .print-area select {
+        border: 1px solid #ddd !important;
+        color: #000 !important;
+        background: #fff !important;
+      }
+
+      .print-area .panel {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+      }
+
+      .print-area .table th,
+      .print-area .table td {
+        border-color: #ddd !important;
+      }
+    }
+
+    /* Cash Report */
+    .cash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+    }
+
+    .cash-table input {
+      width: 96px;
+      min-height: 44px;
+      text-align: right;
+    }
+
+    .cash-table td,
+    .cash-table th {
+      white-space: nowrap;
+    }
+
+    .cash-withdrawals {
+      display: grid;
+      gap: 12px;
+    }
+
+    .cash-withdrawal {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1.6fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .cash-summary {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cash-summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .cash-summary-row.final {
+      border-bottom: 0;
+      color: var(--white);
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .cash-summary-row.positive strong {
+      color: var(--success);
+    }
+
+    .cash-summary-row.negative strong {
+      color: var(--danger);
+    }
+
+    .cash-meta {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .cash-meta strong {
+      color: var(--white);
+    }
+
+    .cash-badge {
+      color: var(--cash-accent, var(--gold));
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.84rem;
+    }
+
+    .cash-theme-select {
+      min-width: 190px;
+    }
+
+    .cash-report.theme-gold {
+      --cash-accent: #d8ae5f;
+      --cash-accent-2: #f1d18a;
+    }
+
+    .cash-report.theme-emerald {
+      --cash-accent: #67d99b;
+      --cash-accent-2: #a9f2c6;
+    }
+
+    .cash-report.theme-blue {
+      --cash-accent: #6db2ff;
+      --cash-accent-2: #a8d2ff;
+    }
+
+    .cash-report.theme-purple {
+      --cash-accent: #bb93ff;
+      --cash-accent-2: #d9c2ff;
+    }
+
+    .cash-report.theme-rose {
+      --cash-accent: #ff8fa8;
+      --cash-accent-2: #ffc0cd;
+    }
+
+    .cash-report .panel {
+      border-top: 3px solid var(--cash-accent, var(--gold));
+    }
+
+    .cash-report .btn-gold {
+      background: linear-gradient(135deg, var(--cash-accent-2, #f1d18a), var(--cash-accent, #d8ae5f));
+      color: #111;
+    }
+
+    @media (max-width: 800px) {
+      .cash-withdrawal {
+        grid-template-columns: 1fr;
+      }
+    }

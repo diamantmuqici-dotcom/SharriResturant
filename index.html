@@ -4065,7 +4065,7 @@ function openReceipt(orderId){
   `);
 }
 /* ================= END PATCH 3 ================= */
-    /* ================= PATCH 4: show NEW products added in code ================= */
+/* ================= PATCH 4: show NEW products added in code ================= */
 function mergeListById(baseList, savedList) {
   const saved = (savedList || []).map(item => ({ ...item }));
   const ids = new Set(saved.map(x => x.id));
