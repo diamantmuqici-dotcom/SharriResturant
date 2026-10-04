@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#07080b" />
+  <title>SHARRI | Kamarieri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="pos.css" />
+</head>
+<body>
+  <div class="pos">
+    <header class="pos-topbar" id="topbar" aria-label="Shiriti i sipërm"></header>
+    <main class="pos-main" id="view" aria-live="polite"></main>
+  </div>
+
+  <div id="sheetRoot"></div>
+  <div id="toastRoot" class="toasts" aria-live="polite"></div>
+  <div id="printRoot" class="print-area" aria-hidden="true"></div>
+
+  <script type="module" src="app/pos.js"></script>
+</body>
+</html>
