@@ -34,7 +34,14 @@ Testet:
 
 ```bash
 npm test           # 47 teste, zero varësi (node --test)
+
+# Opsionale — testet e ndërfaqes (klikime reale në jsdom + serveri i ngritur vetë):
+npm i -D jsdom     # e vetmja varësi, vetëm për zhvillim
+npm run test:ui    # 3 suita: ekrani i kamarierit, faqja/kuzhina/admini, mënyra statike
 ```
+
+Pa `jsdom` të instaluar, `npm run test:ui` i anashkalon suitat në mënyrë të butë
+(`skipped 3`) dhe `npm test` mbetet pa asnjë varësi.
 
 Shënim: skedarët nuk hapen me dyklik (`file://`) — modulet e shfletuesit kërkojnë
 protokoll HTTP. Përdorni `npm start` ose çdo server statik (`python3 -m http.server`).
@@ -242,6 +249,7 @@ server/db.js      ruajtja në server/data/db.json
 server/data/      të dhënat (nuk ruhet në Git)
 
 test/             47 teste (rregullat, motori, API lokale, serveri)
+test-ui/          testet e ndërfaqes (opsionale, kërkojnë jsdom)
 ```
 
 Pa varësi, pa ndërtim, pa framework — vetëm Node ≥ 20 për serverin dhe testet.
