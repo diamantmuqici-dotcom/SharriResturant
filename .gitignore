@@ -1,0 +1,9 @@
+# Të dhënat e serverit (porosi, raporte) — nuk ruhen në Git
+server/data/
+
+# Sistemet operative / mjetet
+node_modules
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

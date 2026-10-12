@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SHARRI | Porosia Juaj</title>
+<title>SHARRI | Fatura e porosisë</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,7 +53,7 @@
 
 <section id="empty" class="empty hidden">
   <h1>SHARRI</h1>
-  <p>Nuk u gjet asnjë porosi në këtë link.</p>
+  <p>Nuk u gjet asnjë faturë në këtë lidhje.</p>
 </section>
 
 <script>
@@ -66,14 +66,23 @@
     taxRate: 18
   };
 
+  const LLOJET = {
+    TAVOLINE: "Tavolinë",
+    EMER: "Me emër",
+    ME_VETI: "Me veti",
+    PER_KETU: "Për këtu"
+  };
+
+  const PAGESAT = {
+    cash: "Para të gatshme",
+    card: "Kartelë",
+    other: "Tjetër"
+  };
+
   const money = v => "€" + Number(v || 0).toFixed(2);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
-
-  function decodeSafe(raw) {
-    try { return decodeURIComponent(raw); } catch { return raw; }
-  }
-
-  function $(s) { return document.querySelector(s); }
+  const decodeSafe = raw => { try { return decodeURIComponent(raw); } catch { return raw; } };
+  const $ = s => document.querySelector(s);
 
   const raw = decodeSafe(location.hash.slice(1)).trim();
 
@@ -83,24 +92,40 @@
     render(raw);
   }
 
-  function render(raw) {
-    const f = raw.split("|");
-    const number = f[0] || "-";
-    const typeTable = f[1] || "";
-    const itemsStr = f[2] || "";
-    const total = parseFloat((f[3] || "E0").replace("E", "")) || 0;
-    const date = (f[4] || "").replace(" ", " • ");
-
-    const [typeRaw, table] = typeTable.split(":");
-    const type = typeRaw === "Haj" ? "Haj këtu" : "Merr me vete";
-
-    const items = itemsStr.split(";").map(p => {
-      const m = p.match(/^(\d+)x(.*)E([\d.]+)$/);
-      if (!m) return null;
-      return { qty: Number(m[1]), name: m[2], line: parseFloat(m[3]) };
+  function parseItems(text) {
+    return String(text || "").split(";").map(part => {
+      const match = part.match(/^(\d+)x(.*)E([\d.]+)$/);
+      if (!match) return null;
+      return { qty: Number(match[1]), name: match[2].trim(), line: parseFloat(match[3]) || 0 };
     }).filter(Boolean);
+  }
+
+  function render(raw) {
+    const fields = raw.split("|");
+    let number, typeLabel, identifier, items, total, date, payment;
+
+    if (fields[0] === "SH2") {
+      number = fields[1] || "-";
+      typeLabel = LLOJET[fields[2]] || "Porosi";
+      identifier = fields[3] && fields[3] !== "-" ? fields[3] : "";
+      items = parseItems(fields[4]);
+      total = parseFloat((fields[5] || "E0").replace("E", "")) || 0;
+      date = (fields[6] || "").replace(" ", " • ");
+      payment = fields[7] && fields[7] !== "-" ? PAGESAT[fields[7]] || fields[7] : "";
+    } else {
+      number = fields[0] || "-";
+      const typeTable = fields[1] || "";
+      const [typeRaw, table] = typeTable.split(":");
+      typeLabel = typeRaw === "Haj" ? "Për këtu" : "Me veti";
+      identifier = table || "";
+      items = parseItems(fields[2]);
+      total = parseFloat((fields[3] || "E0").replace("E", "")) || 0;
+      date = (fields[4] || "").replace(" ", " • ");
+      payment = "";
+    }
 
     const vat = total - total / (1 + RESTAURANT.taxRate / 100);
+    const isTable = typeLabel === "Tavolinë" && identifier;
 
     const itemRows = items.length
       ? items.map(i => `
@@ -108,7 +133,7 @@
             <span>${i.qty} × ${esc(i.name)}</span>
             <strong>${money(i.line)}</strong>
           </div>`).join("")
-      : `<div class="r-line"><span>-</span><strong>-</strong></div>`;
+      : `<div class="r-line"><span>—</span><strong>—</strong></div>`;
 
     $("#card").innerHTML = `
       <div class="r-head">
@@ -121,8 +146,8 @@
 
       <div class="r-line"><span>Porosia</span><strong>${esc(number)}</strong></div>
       <div class="r-line"><span>Data</span><strong>${esc(date)}</strong></div>
-      <div class="r-line"><span>Lloji</span><strong>${esc(type)}</strong></div>
-      ${table ? `<div class="r-line"><span>Tavolina</span><strong>${esc(table)}</strong></div>` : ""}
+      <div class="r-line"><span>Lloji</span><strong>${esc(typeLabel)}</strong></div>
+      ${identifier ? `<div class="r-line"><span>${isTable ? "Tavolina" : "Identifikuesi"}</span><strong>${esc(identifier)}</strong></div>` : ""}
 
       <div class="r-div"></div>
       <div class="r-items">${itemRows}</div>
@@ -131,6 +156,11 @@
       <div class="r-line"><span>Nëntotali</span><strong>${money(total)}</strong></div>
       <div class="r-line"><span>TVSH</span><strong>${money(vat)}</strong></div>
       <div class="r-line"><strong>Totali</strong><strong>${money(total)}</strong></div>
+
+      ${payment ? `
+      <div class="r-div"></div>
+      <div class="r-line"><span>Statusi</span><strong>Paguar</strong></div>
+      <div class="r-line"><span>Mënyra e pagesës</span><strong>${esc(payment)}</strong></div>` : ""}
 
       <div class="r-thanks">Faleminderit që zgjodhët ${esc(RESTAURANT.name)}!</div>
     `;

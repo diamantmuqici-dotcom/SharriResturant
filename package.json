@@ -1,0 +1,16 @@
+{
+  "name": "sharri-resturant",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SHARRI Restaurant — faqja, ekrani i kamarierit, kuzhina dhe paneli i administratorit (shqip, pa varësi)",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "test": "node --test test/*.test.js",
+    "test:ui": "node --test test-ui/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
